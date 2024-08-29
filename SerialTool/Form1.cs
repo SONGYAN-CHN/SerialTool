@@ -18,12 +18,10 @@ namespace SerialTool
     {
         public Mutex mutex = new Mutex();
         public ConvertTool convertTool = new ConvertTool();
-
-
-
         private SerialPort serialPort = new SerialPort();
         private TimeGetTool timeGet = new TimeGetTool();
         private SendTool sendTool = new SendTool();
+
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +38,7 @@ namespace SerialTool
 
 
         }
+
         /// <summary>
         /// 关闭时将cbo中内容保存至Properties.Settings中
         /// </summary>
@@ -56,9 +55,6 @@ namespace SerialTool
             Properties.Settings.Default.tbxTIText = tbxTI.Text;
             Properties.Settings.Default.Save();
         }
-
-
-
 
         private void btnOpenPort_Click(object sender, EventArgs e)
         {
@@ -155,8 +151,6 @@ namespace SerialTool
             serialPort.Close();
         }
 
-
-
         private void btnAcClear_Click(object sender, EventArgs e)
         {
             this.txtAccept.Clear();
@@ -166,7 +160,6 @@ namespace SerialTool
         {
             this.txtSend.Clear();
         }
-
 
         /// <summary>
         /// 创建以系统时间命名的txt文档保存接收区和发送区内容
@@ -193,11 +186,12 @@ namespace SerialTool
             btnSave.Enabled = false;
             serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
             //txtAccept.AppendText(timeGet.TextTime()+ "--发送-->" + txtSend.Text+"\r\n"+timeGet.TextTime() + "--接收-->" + await sendTool.EasySend(serialPort, this.txtSend.Text) + "\r\n");
-            txtAccept.AppendText(timeGet.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + timeGet.TextTime() + "--接收-->" + await sendTool._698SendAndRead(serialPort, this.txtSend.Text) + "\r\n");
+            txtAccept.AppendText(timeGet.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + timeGet.TextTime() + "--接收-->" + await sendTool.SendAndRcv698(serialPort, this.txtSend.Text) + "\r\n");
             serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
             btnSave.Enabled = true;
 
         }
+
         private async void chkAutoSend_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -214,7 +208,7 @@ namespace SerialTool
                     try
                     {
                         await Task.Delay(Int32.Parse(tbxTI.Text) - 100);//犹豫发送窗口本身需等待100ms，为了求得实际值需-100，如输入200ms后200-100+100=200ms
-                        txtAccept.AppendText(timeGet.TextTime() + await sendTool._645SendAndRead(serialPort, this.txtSend.Text) + "\r\n");
+                        txtAccept.AppendText(timeGet.TextTime() + await sendTool.SendAndRcv645(serialPort, this.txtSend.Text) + "\r\n");
                     }
                     catch
                     {
@@ -243,7 +237,6 @@ namespace SerialTool
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
         private void tbxTI_Leave(object sender, EventArgs e)
         {
             try
@@ -275,30 +268,15 @@ namespace SerialTool
         {
 
         }
+
         private void TestRead(object sender, SerialDataReceivedEventArgs e)
         {
 
-
-
-
-
-            
-
-
-
             int Num698;
-
-
-
 
             try
             {
                 mutex.WaitOne();
-
-
-
-                
-
 
                 //68是数组下标
 
@@ -307,9 +285,6 @@ namespace SerialTool
                 #region 内嵌
                 while (true)
                 {
-
-
-
 
                     int count = 0;
                     Thread.Sleep(200);
@@ -322,7 +297,7 @@ namespace SerialTool
 
                     readByteList.AddRange(readByte);
 
-                    
+
 
                     Console.WriteLine("Byte List Elements:");
                     foreach (byte b in readByte)
@@ -335,11 +310,7 @@ namespace SerialTool
                     string ctrlStr;
                     byte[] ctrlByte = new byte[2];
 
-
-
                     Num698 = readByteList.IndexOf(0x68);
-
-                    //Console.WriteLine(Num698);
                     #region 判断
 
                     if (readByteList[Num698] != 0x68)
@@ -370,8 +341,6 @@ namespace SerialTool
 
 
                     }
-
-
                     #endregion
 
                 }
@@ -380,8 +349,7 @@ namespace SerialTool
 
                 this.Invoke(new Action(() =>
                 {
-                    
-                    txtAccept.AppendText(timeGet.TextTime() + "--接收-->"+ convertTool.ByteToString(vs1) + "\r\n");
+                    txtAccept.AppendText(timeGet.TextTime() + "--接收-->" + convertTool.ByteToString(vs1) + "\r\n");
                 }));
                 mutex.ReleaseMutex();
 
@@ -389,7 +357,7 @@ namespace SerialTool
             finally
             {
 
-                
+
             }
 
 

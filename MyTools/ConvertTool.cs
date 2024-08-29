@@ -8,6 +8,7 @@ namespace MyTools
 {
     public class ConvertTool
     {
+
         /// <summary>
         /// String转byte数组
         /// </summary>
@@ -32,6 +33,7 @@ namespace MyTools
             return sendByteList.ToArray();
             
         }
+
         /// <summary>
         /// byte数组转string
         /// </summary>
@@ -46,6 +48,12 @@ namespace MyTools
             }
             return stringBuilder.ToString();
         }
+
+        /// <summary>
+        /// byte数组转string中间无空格
+        /// </summary>
+        /// <param name="readByte"></param>
+        /// <returns></returns>
         public static string ByteToStringNoSpace(byte[] readByte)
         {
             StringBuilder stringBuilder = new StringBuilder();

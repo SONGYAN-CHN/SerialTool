@@ -11,8 +11,8 @@ namespace MyTools
     public class SendTool
     {
         public Mutex mutex = new Mutex();
-        public int Num698 { get; set; } = -1;
 
+        public int Num698 { get; set; } = -1;
 
         private ConvertTool convertTool = new ConvertTool();
 
@@ -22,7 +22,7 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> _698SendAndRead(SerialPort serialPort, string txtSend)
+        public Task<string> SendAndRcv698(SerialPort serialPort, string txtSend)
         {
 
 
@@ -39,7 +39,7 @@ namespace MyTools
                     serialPort.DiscardOutBuffer();
                     serialPort.Write(vs, 0, vs.Length);
                     Thread.Sleep(100);
-
+                    
                     //68是数组下标
 
                     List<byte> readByteList = new List<byte>();
@@ -126,10 +126,15 @@ namespace MyTools
 
 
         }
-        public Task<string> _645SendAndRead(SerialPort serialPort, string txtSend)
+
+        /// <summary>
+        /// 645帧发送和接收带有帧完整性校验
+        /// </summary>
+        /// <param name="serialPort"></param>
+        /// <param name="txtSend"></param>
+        /// <returns></returns>
+        public Task<string> SendAndRcv645(SerialPort serialPort, string txtSend)
         {
-
-
 
             return Task.Run(async () =>
             {
@@ -152,9 +157,6 @@ namespace MyTools
                     while (true)
                     {
 
-
-
-
                         int count = 0;
                         Thread.Sleep(100);
                         count = serialPort.BytesToRead;
@@ -162,8 +164,6 @@ namespace MyTools
                         byte[] readByte = new byte[count];
 
                         serialPort.Read(readByte, 0, count);
-
-
                         readByteList.AddRange(readByte);
 
 
@@ -241,12 +241,12 @@ namespace MyTools
 
 
         /// <summary>
-        /// 简单发送和接收功能
+        /// 不区分645和698的发送和接收无帧完整性校验
         /// </summary>
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> EasySend(SerialPort serialPort, string txtSend)
+        public Task<string> EasySendAndRcv(SerialPort serialPort, string txtSend)
         {
 
             byte[] vs = convertTool.StringToByte(txtSend);

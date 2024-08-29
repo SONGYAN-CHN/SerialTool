@@ -10,11 +10,10 @@ namespace MyTools
 {
     public class SendTool
     {
-        public Mutex mutex = new Mutex();
+        public  Mutex mutex = new Mutex();
 
         public int Num698 { get; set; } = -1;
 
-        private ConvertTool convertTool = new ConvertTool();
 
         /// <summary>
         /// 带有帧校验的发送之后接收
@@ -33,7 +32,7 @@ namespace MyTools
                 {
                     mutex.WaitOne();
 
-                    byte[] vs = convertTool.StringToByte(txtSend);
+                    byte[] vs = ConvertTool.StringToByte(txtSend);
 
                     serialPort.DiscardInBuffer();
                     serialPort.DiscardOutBuffer();
@@ -111,7 +110,7 @@ namespace MyTools
                     #endregion
                     byte[] vs1 = readByteList.ToArray();
 
-                    return convertTool.ByteToString(vs1);
+                    return ConvertTool.ByteToString(vs1);
 
                 }
                 finally
@@ -133,7 +132,7 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> SendAndRcv645(SerialPort serialPort, string txtSend)
+        public  Task<string> SendAndRcv645(SerialPort serialPort, string txtSend)
         {
 
             return Task.Run(async () =>
@@ -142,7 +141,7 @@ namespace MyTools
                 {
                     mutex.WaitOne();
 
-                    byte[] vs = convertTool.StringToByte(txtSend);
+                    byte[] vs = ConvertTool.StringToByte(txtSend);
 
                     serialPort.DiscardInBuffer();
                     serialPort.DiscardOutBuffer();
@@ -216,7 +215,7 @@ namespace MyTools
                     #endregion
                     byte[] vs1 = readByteList.ToArray();
 
-                    return convertTool.ByteToString(vs1);
+                    return ConvertTool.ByteToString(vs1);
 
                 }
                 finally
@@ -232,24 +231,16 @@ namespace MyTools
 
         }
 
-
-
-
-
-
-
-
-
         /// <summary>
         /// 不区分645和698的发送和接收无帧完整性校验
         /// </summary>
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> EasySendAndRcv(SerialPort serialPort, string txtSend)
+        public static Task<string> EasySendAndRcv(SerialPort serialPort, string txtSend)
         {
 
-            byte[] vs = convertTool.StringToByte(txtSend);
+            byte[] vs = ConvertTool.StringToByte(txtSend);
             return Task.Run(async () =>
             {
 
@@ -270,7 +261,7 @@ namespace MyTools
                     byte[] readByte = new byte[count];
                     serialPort.Read(readByte, 0, count);
                     await Task.Delay(100);
-                    return convertTool.ByteToString(readByte);
+                    return ConvertTool.ByteToString(readByte);
                 }
 
             });

@@ -8,13 +8,13 @@ namespace MyTools
 {
     public class TimeGetTool
     {
-        private DateTime dateTime;
+        private static DateTime dateTime;
 
         /// <summary>
         /// 保存内容中的时间戳
         /// </summary>
         /// <returns></returns>
-        public string TextTime()
+        public static string TextTime()
         {
             dateTime = DateTime.Now;
             string strDataTime = dateTime.ToString("[yyyy-MM-dd HH:mm:ss]:");
@@ -25,7 +25,7 @@ namespace MyTools
         /// 文件以时间命名
         /// </summary>
         /// <returns></returns>
-        public string FileTime()
+        public static string FileTime()
         {
             dateTime = DateTime.Now;
             string strDataTime = dateTime.ToString("yyyyMMddHHmmss");

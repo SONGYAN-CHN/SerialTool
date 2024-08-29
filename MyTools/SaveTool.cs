@@ -16,11 +16,11 @@ namespace MyTools
         /// </summary>
         /// <param name="timeGet"></param>
         /// <returns></returns>
-        public FileStream NameTimeSave(TimeGetTool timeGet) 
+        public static FileStream NameTimeSave() 
         {
 
             Directory.CreateDirectory(@"F:\TEXT");
-            string fileName = "F:\\TEXT\\" + timeGet.FileTime() + ".txt";
+            string fileName = "F:\\TEXT\\" + TimeGetTool.FileTime() + ".txt";
             FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             return fs;
         }

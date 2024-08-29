@@ -17,9 +17,7 @@ namespace SerialTool
     public partial class Form1 : Form
     {
         public Mutex mutex = new Mutex();
-        public ConvertTool convertTool = new ConvertTool();
         private SerialPort serialPort = new SerialPort();
-        private TimeGetTool timeGet = new TimeGetTool();
         private SendTool sendTool = new SendTool();
 
         public Form1()
@@ -108,7 +106,7 @@ namespace SerialTool
                 MessageBox.Show("串口打开失败！");
                 return;
             }
-            if (serialPort.IsOpen) txtAccept.AppendText(timeGet.TextTime() + "串口打开成功！\r\n");
+            if (serialPort.IsOpen) txtAccept.AppendText(TimeGetTool.TextTime() + "串口打开成功！\r\n");
 
             this.btnClosePort.Enabled = true;
             this.btnOpenPort.Enabled = false;
@@ -122,7 +120,7 @@ namespace SerialTool
         private void btnClosePort_Click(object sender, EventArgs e)
         {
             serialPort.Close();
-            if (!serialPort.IsOpen) txtAccept.AppendText(timeGet.TextTime() + "串口关闭成功！\r\n");
+            if (!serialPort.IsOpen) txtAccept.AppendText(TimeGetTool.TextTime() + "串口关闭成功！\r\n");
             this.btnClosePort.Enabled = false;
             this.btnOpenPort.Enabled = true;
             this.chkAutoSend.Checked = false;
@@ -166,9 +164,7 @@ namespace SerialTool
         /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
-
-            SaveTool saveTool = new SaveTool();
-            using (StreamWriter streamWriter = new StreamWriter(saveTool.NameTimeSave(timeGet)))
+            using (StreamWriter streamWriter = new StreamWriter(SaveTool.NameTimeSave()))
             {
                 streamWriter.WriteLine(this.txtAccept.Text);
             }
@@ -186,7 +182,7 @@ namespace SerialTool
             btnSave.Enabled = false;
             serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
             //txtAccept.AppendText(timeGet.TextTime()+ "--发送-->" + txtSend.Text+"\r\n"+timeGet.TextTime() + "--接收-->" + await sendTool.EasySend(serialPort, this.txtSend.Text) + "\r\n");
-            txtAccept.AppendText(timeGet.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + timeGet.TextTime() + "--接收-->" + await sendTool.SendAndRcv698(serialPort, this.txtSend.Text) + "\r\n");
+            txtAccept.AppendText(TimeGetTool.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + TimeGetTool.TextTime() + "--接收-->" + await sendTool.SendAndRcv698(serialPort, this.txtSend.Text) + "\r\n");
             serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
             btnSave.Enabled = true;
 
@@ -208,7 +204,7 @@ namespace SerialTool
                     try
                     {
                         await Task.Delay(Int32.Parse(tbxTI.Text) - 100);//犹豫发送窗口本身需等待100ms，为了求得实际值需-100，如输入200ms后200-100+100=200ms
-                        txtAccept.AppendText(timeGet.TextTime() + await sendTool.SendAndRcv645(serialPort, this.txtSend.Text) + "\r\n");
+                        txtAccept.AppendText(TimeGetTool.TextTime() + await sendTool.SendAndRcv645(serialPort, this.txtSend.Text) + "\r\n");
                     }
                     catch
                     {
@@ -349,7 +345,7 @@ namespace SerialTool
 
                 this.Invoke(new Action(() =>
                 {
-                    txtAccept.AppendText(timeGet.TextTime() + "--接收-->" + convertTool.ByteToString(vs1) + "\r\n");
+                    txtAccept.AppendText(TimeGetTool.TextTime() + "--接收-->" + ConvertTool.ByteToString(vs1) + "\r\n");
                 }));
                 mutex.ReleaseMutex();
 

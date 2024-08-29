@@ -14,7 +14,7 @@ namespace MyTools
         /// </summary>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public byte[] StringToByte(string txtSend)
+        public static byte[] StringToByte(string txtSend)
         {
             List<byte> sendByteList = new List<byte>();
             txtSend = txtSend.Replace(" ", "");
@@ -39,7 +39,7 @@ namespace MyTools
         /// </summary>
         /// <param name="readByte"></param>
         /// <returns></returns>
-        public string ByteToString(byte[] readByte)
+        public static string ByteToString(byte[] readByte)
         {
             StringBuilder stringBuilder = new StringBuilder();
             for(int i=0;i<readByte.Length;i++)

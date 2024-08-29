@@ -11,9 +11,15 @@ namespace MyTools
 {
     public class SendTool
     {
-        public Mutex mutex = new Mutex();
+        private Mutex mutex = new Mutex();
 
-        public int Num698 { get; set; } = -1;
+        public int NumStart { get; set; } = -1;
+        public int Numend { get; set; } = -1;
+
+        public int LenInt { get; set; }
+        public byte[] LenByte { get; set; } = new byte[2];
+        public string LenStr { get; set; }
+        public int Count68 { get; set; } 
 
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -28,7 +34,6 @@ namespace MyTools
         public Task<string> SendAndRcv698(SerialPort serialPort, string txtSend)
         {
 
-            
 
             return Task.Run(() =>
            {
@@ -53,56 +58,51 @@ namespace MyTools
                    {
                        try
                        {
-                           
+
                            if (_cancellationTokenSource.Token.IsCancellationRequested)
                                throw new OperationCanceledException();
                            int count = 0;
-                           //Thread.Sleep(200);
                            count = serialPort.BytesToRead;
-                           Console.WriteLine(count);
                            byte[] readByte = new byte[count];
                            serialPort.Read(readByte, 0, count);
                            readByteList.AddRange(readByte);
-                           int ctrlInt;
-                           string ctrlStr;
-                           byte[] ctrlByte = new byte[2];
-                           Num698 = readByteList.IndexOf(0x68);
-                           Console.WriteLine(Num698);
+
+
+                           NumStart = readByteList.IndexOf(0x68);
 
                            #region 判断
                            //接收较慢还没有接收到68------调转回去继续从串口缓存读
 
-                           if (Num698 == -1 || readByteList[Num698] != 0x68)
+                           if (NumStart == -1 || readByteList[NumStart] != 0x68)
                            {
-
                                continue;
 
                            }
                            else
                            {
 
-                               ctrlByte[0] = readByteList[Num698 + 2];
-                               ctrlByte[1] = readByteList[Num698 + 1];
-                               ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
-                               ctrlInt = Convert.ToInt32(ctrlStr, 16);
-                              
-                                   if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
-                                   {
-                                       break;
-                                   }
-                                   else
-                                   {
-                                       //接收到完整报文但是根据长度域对不上最后是16结束符------代表报文收到就是错误的
+                               LenByte[0] = readByteList[NumStart + 2];
+                               LenByte[1] = readByteList[NumStart + 1];
+                               LenStr = ConvertTool.ByteToStringNoSpace(LenByte);
+                               LenInt = Convert.ToInt32(LenStr, 16);
+                               Numend = NumStart + 1 + LenInt;
+                               if (readByteList[Numend] == 0x16)
+                               {
+                                   break;
+                               }
+                               else
+                               {
+                                   //接收到完整报文但是根据长度域对不上最后是16结束符------代表报文收到就是错误的
 
-                                       byte[] rcvByteError = readByteList.ToArray();
-                                       return "接收报文错误" + ConvertTool.ByteToString(rcvByteError);
+                                   byte[] rcvByteError = readByteList.ToArray();
+                                   return "接收报文错误" + ConvertTool.ByteToString(rcvByteError);
 
-                                   }
-                               
+                               }
+
                            }
                            #endregion
                        }
-                       catch(ArgumentOutOfRangeException)
+                       catch (ArgumentOutOfRangeException)
                        {
                            //接收到68和长度域但是还没有接收到全部报文，直接长度域计算会数组超限，循环回去接着从串口缓存区读数据
                            //由if (readByteList[Num698 + 1 + ctrlInt] == 0x16)抛出
@@ -116,14 +116,14 @@ namespace MyTools
                            Console.WriteLine("Read operation canceled due to timeout.");
                            return null;
                        }
-                       
+
                    }
                    #endregion
                    byte[] rcvByte = readByteList.ToArray();
-                   
-                   
+
+
                    return ConvertTool.ByteToString(rcvByte);
-                   
+
 
                }
 
@@ -140,13 +140,6 @@ namespace MyTools
         }
 
 
-
-
-
-
-
-
-
         /// <summary>
         /// 645帧发送和接收带有帧完整性校验
         /// </summary>
@@ -161,7 +154,7 @@ namespace MyTools
                try
                {
                    mutex.WaitOne();
-
+                   _cancellationTokenSource = new CancellationTokenSource(5000);
                    byte[] vs = ConvertTool.StringToByte(txtSend);
 
                    serialPort.DiscardInBuffer();
@@ -177,56 +170,67 @@ namespace MyTools
                    while (true)
                    {
 
-                       int count = 0;
-                       Thread.Sleep(100);
-                       count = serialPort.BytesToRead;
-                       Console.WriteLine(count);
-                       byte[] readByte = new byte[count];
-
-                       serialPort.Read(readByte, 0, count);
-                       readByteList.AddRange(readByte);
-
-
-
-                       int ctrlInt;
-                       string ctrlStr;
-                       byte[] ctrlByte = new byte[1];
-
-
-
-                       Num698 = readByteList.IndexOf(0x68);
-                       if (Num698 != -1)
-                           Num698 = readByteList.IndexOf(0x68, Num698 + 1);
-                       Console.WriteLine(Num698);
-                       #region 判断
-
-                       if (readByteList[Num698] != 0x68)
+                       try
                        {
+                           if (_cancellationTokenSource.Token.IsCancellationRequested)
+                               throw new OperationCanceledException();
+                           int count = 0;
+                           //Thread.Sleep(100);
+                           count = serialPort.BytesToRead;
+                           byte[] readByte = new byte[count];
+                           serialPort.Read(readByte, 0, count);
+                           readByteList.AddRange(readByte);
 
-                           continue;
 
-                       }
-                       else
-                       {
 
-                           ctrlByte[0] = readByteList[Num698 + 2];
-                           ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
-                           ctrlInt = Convert.ToInt32(ctrlStr, 16);
-                           int i = Num698 + 2 + ctrlInt + 2;
-                           if (readByteList[i] == 0x16)
+
+
+                           NumStart = readByteList.IndexOf(0x68);
+                           if (NumStart != -1)
+                               NumStart = readByteList.IndexOf(0x68, NumStart + 1);
+                           #region 判断
+
+                           if (NumStart == -1 || readByteList[NumStart] != 0x68)
                            {
 
+                               continue;
 
-                               break;
                            }
                            else
                            {
 
+                               LenByte[0] = readByteList[NumStart + 2];
+                               LenStr = ConvertTool.ByteToStringNoSpace(LenByte);
+                               LenInt = Convert.ToInt32(LenStr, 16);
+                               Numend = NumStart + 2 + LenInt + 2;
+                               if (readByteList[Numend] == 0x16)
+                               {
 
-                               continue;
+
+                                   break;
+                               }
+                               else
+                               {
+                                   byte[] rcvByteError = readByteList.ToArray();
+                                   return "接收报文错误" + ConvertTool.ByteToString(rcvByteError);
+                               }
+
+
                            }
+                       }
+                       catch (ArgumentOutOfRangeException)
+                       {
+                           //接收到68和长度域但是还没有接收到全部报文，直接长度域计算会数组超限，循环回去接着从串口缓存区读数据
+                           //由if (readByteList[Num698 + 1 + ctrlInt] == 0x16)抛出
 
+                           continue;
+                       }
+                       catch (OperationCanceledException)
+                       {
+                           //当超过一定时间未接收到数据时
 
+                           Console.WriteLine("Read operation canceled due to timeout.");
+                           return null;
                        }
 
 
@@ -246,9 +250,6 @@ namespace MyTools
                }
 
            });
-
-
-
 
         }
 

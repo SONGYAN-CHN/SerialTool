@@ -181,7 +181,6 @@ namespace SerialTool
             }
             btnSave.Enabled = false;
             //serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
- 
             txtAccept.AppendText(TimeGetTool.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + TimeGetTool.TextTime() + "--接收-->" + await sendTool.SendAndRcv698(serialPort, this.txtSend.Text) + "\r\n");
             //serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
             btnSave.Enabled = true;

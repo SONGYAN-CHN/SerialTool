@@ -282,27 +282,7 @@ namespace SerialTool
 
 
 
-            //int count = 0;
-
-            //count = serialPort.BytesToRead;
-            //if (count == 0)
-            //{
-            //    this.Invoke(new Action(() =>
-            //    {
-            //        txtAccept.AppendText("报文错误\r\n");
-            //    }));
-
-            //}
-            //else
-            //{
-            //    byte[] readByte = new byte[count];
-            //    serialPort.Read(readByte, 0, count);
-            //    this.Invoke(new Action(() =>
-            //    {
-            //        txtAccept.AppendText(convertTool.ByteToString(readByte) +"\n");
-            //    }));
-
-            //}
+            
 
 
 

@@ -15,7 +15,7 @@ namespace MyTools
 
 
         private ConvertTool convertTool = new ConvertTool();
-        
+
         /// <summary>
         /// 带有帧校验的发送之后接收
         /// </summary>
@@ -74,37 +74,37 @@ namespace MyTools
 
                         Console.WriteLine(Num698);
                         #region 判断
-                        
-                            if (readByteList[Num698] != 0x68)
+
+                        if (readByteList[Num698] != 0x68)
+                        {
+
+                            continue;
+
+                        }
+                        else
+                        {
+
+                            ctrlByte[0] = readByteList[Num698 + 2];
+                            ctrlByte[1] = readByteList[Num698 + 1];
+                            ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
+                            ctrlInt = Convert.ToInt32(ctrlStr, 16);
+                            if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
                             {
 
-                                continue;
 
+                                break;
                             }
                             else
                             {
 
-                                ctrlByte[0] = readByteList[Num698 + 2];
-                                ctrlByte[1] = readByteList[Num698 + 1];
-                                ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
-                                ctrlInt = Convert.ToInt32(ctrlStr, 16);
-                                if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
-                                {
 
-
-                                    break;
-                                }
-                                else
-                                {
-
-
-                                    continue;
-                                }
-
-
+                                continue;
                             }
-                       
-                        
+
+
+                        }
+
+
                         #endregion
 
                     }
@@ -231,7 +231,7 @@ namespace MyTools
 
 
         }
-       
+
 
 
 
@@ -276,62 +276,9 @@ namespace MyTools
             });
 
         }
-        public bool msg695Check(ref List<byte> readByteList, Task task)
-        {
-            int j = 0;
-            int ctrlInt;
-            string ctrlStr;
-            byte[] ctrlByte = new byte[2];
 
 
-
-            Num698 = readByteList.IndexOf(0x68);
-
-
-            while (readByteList[Num698] != 0x68)
-            {
-                Num698++;
-            }
-            if (readByteList[Num698] != 0x68)
-            {
-
-                return false;
-
-            }
-            else
-            {
-                while (true)
-                {
-                    try
-                    {
-                        ctrlByte[0] = readByteList[Num698 + 2];
-                        ctrlByte[1] = readByteList[Num698 + 1];
-                        ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
-                        ctrlInt = Convert.ToInt32(ctrlStr, 16);
-                        if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
-                        {
-
-                            return true;
-                        }
-                        else
-                        {
-
-                            return false;
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
-            }
-
-
-
-        }
     }
-
-
 
 }
 

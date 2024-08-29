@@ -19,9 +19,45 @@ namespace MyTools
         public int LenInt { get; set; }
         public byte[] LenByte { get; set; } = new byte[2];
         public string LenStr { get; set; }
-        public int Count68 { get; set; } 
+        
 
         private CancellationTokenSource _cancellationTokenSource;
+
+
+
+        public Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
+        {
+            return Task.Run(() =>
+            {
+               
+
+                byte[] textSendByte = ConvertTool.StringToByte(txtSend);
+                if( Is698Or645(textSendByte)==1)
+                {
+                    return  SendAndRcv698(serialPort, textSendByte);
+                }
+                else
+                {
+                    return  SendAndRcv698(serialPort, textSendByte);
+                }
+                
+                
+            });
+        }
+
+        private  int Is698Or645 (byte[] textSendByte)
+        {
+            int StartCount = 0;
+            foreach (int starBit in textSendByte)
+            {
+                if (starBit == 0x68)
+                    StartCount++;
+            }
+            return StartCount;
+
+        }
+
+
 
 
         /// <summary>
@@ -31,22 +67,23 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> SendAndRcv698(SerialPort serialPort, string txtSend)
+        public string SendAndRcv698(SerialPort serialPort, byte[] textSendByte)
         {
 
 
-            return Task.Run(() =>
-           {
+           
+           
                try
                {
+
                    mutex.WaitOne();
                    _cancellationTokenSource = new CancellationTokenSource(5000);
 
-                   byte[] vs = ConvertTool.StringToByte(txtSend);
+                   
 
                    serialPort.DiscardInBuffer();
                    serialPort.DiscardOutBuffer();
-                   serialPort.Write(vs, 0, vs.Length);
+                   serialPort.Write(textSendByte, 0, textSendByte.Length);
                    Thread.Sleep(100);
 
 
@@ -132,7 +169,7 @@ namespace MyTools
                    mutex.ReleaseMutex();
                }
 
-           });
+           
 
 
 
@@ -146,20 +183,18 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> SendAndRcv645(SerialPort serialPort, string txtSend)
+        public string SendAndRcv645(SerialPort serialPort, byte[] textSendByte)
         {
 
-            return Task.Run(() =>
-           {
+            
                try
                {
                    mutex.WaitOne();
                    _cancellationTokenSource = new CancellationTokenSource(5000);
-                   byte[] vs = ConvertTool.StringToByte(txtSend);
 
                    serialPort.DiscardInBuffer();
                    serialPort.DiscardOutBuffer();
-                   serialPort.Write(vs, 0, vs.Length);
+                   serialPort.Write(textSendByte, 0, textSendByte.Length);
                    Thread.Sleep(100);
 
                    //68是数组下标
@@ -249,46 +284,13 @@ namespace MyTools
                    mutex.ReleaseMutex();
                }
 
-           });
+           
 
         }
 
-        /// <summary>
-        /// 不区分645和698的发送和接收无帧完整性校验
-        /// </summary>
-        /// <param name="serialPort"></param>
-        /// <param name="txtSend"></param>
-        /// <returns></returns>
-        public static Task<string> EasySendAndRcv(SerialPort serialPort, string txtSend)
-        {
+       
 
-            byte[] vs = ConvertTool.StringToByte(txtSend);
-            return Task.Run(async () =>
-            {
-
-                serialPort.DiscardInBuffer();
-                serialPort.DiscardOutBuffer();
-
-                serialPort.Write(vs, 0, vs.Length);
-                await Task.Delay(100);
-                int count = 0;
-                await Task.Delay(100);
-                count = serialPort.BytesToRead;
-                if (count == 0)
-                {
-                    return "报文错误";
-                }
-                else
-                {
-                    byte[] readByte = new byte[count];
-                    serialPort.Read(readByte, 0, count);
-                    await Task.Delay(100);
-                    return ConvertTool.ByteToString(readByte);
-                }
-
-            });
-
-        }
+        
 
 
     }

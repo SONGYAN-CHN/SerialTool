@@ -14,6 +14,8 @@ namespace MyTools
 
         public int Num698 { get; set; } = -1;
 
+        private  CancellationTokenSource _cancellationTokenSource;
+
 
         /// <summary>
         /// 带有帧校验的发送之后接收
@@ -21,16 +23,17 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public Task<string> SendAndRcv698(SerialPort serialPort, string txtSend)
+        public  Task<string> SendAndRcv698(SerialPort serialPort, string txtSend)
         {
 
 
 
-            return Task.Run(async () =>
+            return Task.Run( () =>
             {
                 try
                 {
                     mutex.WaitOne();
+                    _cancellationTokenSource = new CancellationTokenSource(5000);
 
                     byte[] vs = ConvertTool.StringToByte(txtSend);
 
@@ -39,80 +42,87 @@ namespace MyTools
                     serialPort.Write(vs, 0, vs.Length);
                     Thread.Sleep(100);
                     
-                    //68是数组下标
 
                     List<byte> readByteList = new List<byte>();
 
                     #region 内嵌
-                    while (true)
-                    {
-
-
-
-
-                        int count = 0;
-                        Thread.Sleep(200);
-                        count = serialPort.BytesToRead;
-                        Console.WriteLine(count);
-                        byte[] readByte = new byte[count];
-
-                        serialPort.Read(readByte, 0, count);
-
-
-                        readByteList.AddRange(readByte);
-
-
-
-                        int ctrlInt;
-                        string ctrlStr;
-                        byte[] ctrlByte = new byte[2];
-
-
-
-                        Num698 = readByteList.IndexOf(0x68);
-
-                        Console.WriteLine(Num698);
-                        #region 判断
-
-                        if (readByteList[Num698] != 0x68)
+                    
+                        while (true)
                         {
-
-                            continue;
-
-                        }
-                        else
+                        try
                         {
+                            if (_cancellationTokenSource.Token.IsCancellationRequested)
+                                throw new OperationCanceledException();
+                            int count = 0;
+                            Thread.Sleep(200);
+                            count = serialPort.BytesToRead;
+                            Console.WriteLine(count);
+                            byte[] readByte = new byte[count];
 
-                            ctrlByte[0] = readByteList[Num698 + 2];
-                            ctrlByte[1] = readByteList[Num698 + 1];
-                            ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
-                            ctrlInt = Convert.ToInt32(ctrlStr, 16);
-                            if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
+                            serialPort.Read(readByte, 0, count);
+
+
+                            readByteList.AddRange(readByte);
+
+
+
+                            int ctrlInt;
+                            string ctrlStr;
+                            byte[] ctrlByte = new byte[2];
+
+
+
+                            Num698 = readByteList.IndexOf(0x68);
+
+                            Console.WriteLine(Num698);
+                            #region 判断
+                          
+                                if (Num698==-1||readByteList[Num698] != 0x68)
+                                {
+
+                                    continue;
+
+                                }
+                                else
                             {
 
-
-                                break;
-                            }
-                            else
-                            {
-
-
-                                continue;
-                            }
+                                    ctrlByte[0] = readByteList[Num698 + 2];
+                                    ctrlByte[1] = readByteList[Num698 + 1];
+                                    ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
+                                    ctrlInt = Convert.ToInt32(ctrlStr, 16);
+                                    if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
+                                    {
 
 
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+
+
+                                }
+
+                            #endregion
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            Console.WriteLine("Read operation canceled due to timeout.");
+                            return null;
                         }
 
+                            
 
-                        #endregion
-
-                    }
+                        }
                     #endregion
-                    byte[] vs1 = readByteList.ToArray();
+                        byte[] rcvByte = readByteList.ToArray();
 
-                    return ConvertTool.ByteToString(vs1);
+                        return ConvertTool.ByteToString(rcvByte);
+                    
 
                 }
+                
                 finally
                 {
 
@@ -126,13 +136,21 @@ namespace MyTools
 
         }
 
+
+
+
+
+
+
+
+
         /// <summary>
         /// 645帧发送和接收带有帧完整性校验
         /// </summary>
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public  Task<string> SendAndRcv645(SerialPort serialPort, string txtSend)
+        public Task<string> SendAndRcv645(SerialPort serialPort, string txtSend)
         {
 
             return Task.Run(async () =>
@@ -213,9 +231,9 @@ namespace MyTools
 
                     }
                     #endregion
-                    byte[] vs1 = readByteList.ToArray();
+                    byte[] rcvByte = readByteList.ToArray();
 
-                    return ConvertTool.ByteToString(vs1);
+                    return ConvertTool.ByteToString(rcvByte);
 
                 }
                 finally

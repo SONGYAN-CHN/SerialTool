@@ -99,7 +99,7 @@ namespace SerialTool
             try
             {
                 serialPort.Open();
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
+                //serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
             }
             catch
             {
@@ -180,10 +180,9 @@ namespace SerialTool
                 return;
             }
             btnSave.Enabled = false;
-            serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
-            //txtAccept.AppendText(timeGet.TextTime()+ "--发送-->" + txtSend.Text+"\r\n"+timeGet.TextTime() + "--接收-->" + await sendTool.EasySend(serialPort, this.txtSend.Text) + "\r\n");
+            //serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);            
             txtAccept.AppendText(TimeGetTool.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + TimeGetTool.TextTime() + "--接收-->" + await sendTool.SendAndRcv698(serialPort, this.txtSend.Text) + "\r\n");
-            serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
+            //serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
             btnSave.Enabled = true;
 
         }
@@ -198,13 +197,12 @@ namespace SerialTool
                 btnSave.Enabled = false;
                 while (this.chkAutoSend.Checked)
                 {
-                    //sleep单位ms
-                    //Thread.Sleep(Int32.Parse(tbx时间间隔.Text));
+                   
 
                     try
                     {
-                        await Task.Delay(Int32.Parse(tbxTI.Text) - 100);//犹豫发送窗口本身需等待100ms，为了求得实际值需-100，如输入200ms后200-100+100=200ms
-                        txtAccept.AppendText(TimeGetTool.TextTime() + await sendTool.SendAndRcv645(serialPort, this.txtSend.Text) + "\r\n");
+                        await Task.Delay(Int32.Parse(tbxTI.Text) - 100);
+                        txtAccept.AppendText(TimeGetTool.TextTime() + await sendTool.SendAndRcv698(serialPort, this.txtSend.Text) + "\r\n");
                     }
                     catch
                     {
@@ -255,109 +253,99 @@ namespace SerialTool
             }
         }
 
-        private void lblMs_Click(object sender, EventArgs e)
-        {
+        //private void TestRead(object sender, SerialDataReceivedEventArgs e)
+        //{
 
-        }
+        //    int Num698;
 
-        private void tbxTI_TextChanged(object sender, EventArgs e)
-        {
+        //    try
+        //    {
+        //        mutex.WaitOne();
 
-        }
+        //        //68是数组下标
 
-        private void TestRead(object sender, SerialDataReceivedEventArgs e)
-        {
+        //        List<byte> readByteList = new List<byte>();
 
-            int Num698;
+        //        #region 内嵌
+        //        while (true)
+        //        {
 
-            try
-            {
-                mutex.WaitOne();
+        //            int count = 0;
+        //            Thread.Sleep(200);
+        //            count = serialPort.BytesToRead;
+        //            //Console.WriteLine(count);
+        //            byte[] readByte = new byte[count];
 
-                //68是数组下标
-
-                List<byte> readByteList = new List<byte>();
-
-                #region 内嵌
-                while (true)
-                {
-
-                    int count = 0;
-                    Thread.Sleep(200);
-                    count = serialPort.BytesToRead;
-                    //Console.WriteLine(count);
-                    byte[] readByte = new byte[count];
-
-                    serialPort.Read(readByte, 0, count);
+        //            serialPort.Read(readByte, 0, count);
 
 
-                    readByteList.AddRange(readByte);
+        //            readByteList.AddRange(readByte);
 
 
 
-                    Console.WriteLine("Byte List Elements:");
-                    foreach (byte b in readByte)
-                    {
-                        Console.Write(b.ToString("X2") + " ");
-                    }
-                    Console.WriteLine();
+        //            Console.WriteLine("Byte List Elements:");
+        //            foreach (byte b in readByte)
+        //            {
+        //                Console.Write(b.ToString("X2") + " ");
+        //            }
+        //            Console.WriteLine();
 
-                    int ctrlInt;
-                    string ctrlStr;
-                    byte[] ctrlByte = new byte[2];
+        //            int ctrlInt;
+        //            string ctrlStr;
+        //            byte[] ctrlByte = new byte[2];
 
-                    Num698 = readByteList.IndexOf(0x68);
-                    #region 判断
+        //            Num698 = readByteList.IndexOf(0x68);
+        //            #region 判断
 
-                    if (readByteList[Num698] != 0x68)
-                    {
+        //            if (readByteList[Num698] != 0x68)
+        //            {
 
-                        continue;
+        //                continue;
 
-                    }
-                    else
-                    {
+        //            }
+        //            else
+        //            {
 
-                        ctrlByte[0] = readByteList[Num698 + 2];
-                        ctrlByte[1] = readByteList[Num698 + 1];
-                        ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
-                        ctrlInt = Convert.ToInt32(ctrlStr, 16);
-                        if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
-                        {
-
-
-                            break;
-                        }
-                        else
-                        {
+        //                ctrlByte[0] = readByteList[Num698 + 2];
+        //                ctrlByte[1] = readByteList[Num698 + 1];
+        //                ctrlStr = ConvertTool.ByteToStringNoSpace(ctrlByte);
+        //                ctrlInt = Convert.ToInt32(ctrlStr, 16);
+        //                if (readByteList[Num698 + 1 + ctrlInt] == 0x16)
+        //                {
 
 
-                            continue;
-                        }
+        //                    break;
+        //                }
+        //                else
+        //                {
 
 
-                    }
-                    #endregion
-
-                }
-                #endregion
-                byte[] vs1 = readByteList.ToArray();
-
-                this.Invoke(new Action(() =>
-                {
-                    txtAccept.AppendText(TimeGetTool.TextTime() + "--接收-->" + ConvertTool.ByteToString(vs1) + "\r\n");
-                }));
-                mutex.ReleaseMutex();
-
-            }
-            finally
-            {
+        //                    continue;
+        //                }
 
 
-            }
+        //            }
+        //            #endregion
+
+        //        }
+        //        #endregion
+        //        byte[] vs1 = readByteList.ToArray();
+
+        //        this.Invoke(new Action(() =>
+        //        {
+        //            txtAccept.AppendText(TimeGetTool.TextTime() + "--接收-->" + ConvertTool.ByteToString(vs1) + "\r\n");
+        //        }));
+        //        mutex.ReleaseMutex();
+
+        //    }
+        //    finally
+        //    {
 
 
-        }
+        //    }
+
+
+        //}
     }
 
 }

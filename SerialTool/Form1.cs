@@ -11,6 +11,7 @@ using System.IO.Ports;
 using System.IO;
 using System.Threading;
 using MyTools;
+using System.Diagnostics;
 
 namespace SerialTool
 {
@@ -19,6 +20,7 @@ namespace SerialTool
         public Mutex mutex = new Mutex();
         private SerialPort serialPort = new SerialPort();
         private SendTool sendTool = new SendTool();
+        private Stopwatch stopwatch = new Stopwatch();
 
         public Form1()
         {
@@ -129,6 +131,7 @@ namespace SerialTool
             this.cboDataBits.Enabled = true;
             this.cboStopBits.Enabled = true;
             this.cboCheck.Enabled = true;
+            this.chkAutoSend.Checked = false;
 
         }
 
@@ -146,6 +149,7 @@ namespace SerialTool
             this.cboDataBits.Enabled = true;
             this.cboStopBits.Enabled = true;
             this.cboCheck.Enabled = true;
+            this.chkAutoSend.Checked = false;
             serialPort.Close();
         }
 
@@ -180,8 +184,11 @@ namespace SerialTool
                 return;
             }
             btnSave.Enabled = false;
+            stopwatch.Restart();
             //serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
-            txtAccept.AppendText(TimeGetTool.TextTime() + "--发送-->" + txtSend.Text + "\r\n" + TimeGetTool.TextTime() + "--接收-->" + await sendTool.SendAndRcv(serialPort, this.txtSend.Text) + "\r\n");
+            txtAccept.AppendText($"{TimeGetTool.TextTime()}--发送-->{txtSend.Text}\r\n{TimeGetTool.TextTime()}--接收-->{await sendTool.SendAndRcv(serialPort, this.txtSend.Text)}\r\n");
+            stopwatch.Stop();
+            txtAccept.AppendText($"耗时：{stopwatch.ElapsedMilliseconds}ms\r\n");
             //serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
             btnSave.Enabled = true;
 
@@ -192,6 +199,14 @@ namespace SerialTool
 
             if (this.chkAutoSend.Checked)
             {
+                if (!serialPort.IsOpen)
+                {
+                    MessageBox.Show("串口未打开！");
+                    this.chkAutoSend.Checked = false;
+                    return;
+                }
+
+                
                 this.btnSend.Enabled = false;
                 tbxTI.Enabled = false;
                 btnSave.Enabled = false;
@@ -201,8 +216,12 @@ namespace SerialTool
 
                     try
                     {
+                        stopwatch.Start();
                         await Task.Delay(Int32.Parse(tbxTI.Text) - 100);
-                        txtAccept.AppendText(TimeGetTool.TextTime() + await sendTool.SendAndRcv(serialPort, this.txtSend.Text) + "\r\n");
+                        txtAccept.AppendText($"{TimeGetTool.TextTime()}--发送-->{txtSend.Text}\r\n{TimeGetTool.TextTime()}--接收-->{await sendTool.SendAndRcv(serialPort, this.txtSend.Text)}\r\n");
+                        stopwatch.Stop();
+                        txtAccept.AppendText($"耗时：{stopwatch.ElapsedMilliseconds}ms\r\n");
+                        
                     }
                     catch
                     {

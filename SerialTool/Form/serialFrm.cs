@@ -297,24 +297,7 @@ namespace SerialTool
 
         }
 
-        private void txtTI_TextChanged(object sender, EventArgs e)
-        {
-
-            
-        }
-
-        private void txtTI_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                sendTool.TimeOutSet(txtTI.Text);
-            }
-            catch
-            {
-                txtTI.Text = "";
-                MessageBox.Show("正确输入TI");
-            }
-        }
+      
     }
 
 }

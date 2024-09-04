@@ -46,6 +46,7 @@
     <Compile Include="SaveTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendTool.cs" />
+    <Compile Include="TcpClientHelper.cs" />
     <Compile Include="TimeGetTool.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,5 +16,23 @@ namespace SerialTool
         {
             InitializeComponent();
         }
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOpenOrClose_Click(object sender, EventArgs e)
+        {
+            if (btnConnect.Text == "关闭连接")
+            {
+                btnConnect.Text = "建立连接";
+            }
+            else
+            {
+                btnConnect.Text = "关闭连接";
+            }
+
+        }
     }
 }

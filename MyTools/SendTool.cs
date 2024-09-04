@@ -9,15 +9,18 @@ using System.Threading;
 
 namespace MyTools
 {
+    
+
     public class SendTool
     {
-        private Mutex mutex = new Mutex();
+        const int TI = 5000;
+        private Mutex _mutex = new Mutex();
         private CancellationTokenSource _cancellationTokenSource;
         public int NumStart { get; set; }
         public int Numend { get; set; }
         public int LenInt { get; set; }
         public string LenStr { get; set; }
-        private int ti;
+        
 
         /// <summary>
         /// 发送后接收功能
@@ -31,7 +34,8 @@ namespace MyTools
             {
                 try
                 {
-                    mutex.WaitOne();
+                    
+                    _mutex.WaitOne();
 
                     string rcv;
                     byte[] textSendByte = ConvertTool.StringToByte(txtSend);
@@ -54,7 +58,7 @@ namespace MyTools
                 finally
                 {
 
-                    mutex.ReleaseMutex();
+                    _mutex.ReleaseMutex();
                 }
 
 
@@ -102,7 +106,7 @@ namespace MyTools
         {
             List<byte> readByteList = new List<byte>();
             byte[] LenByte = new byte[2];
-            _cancellationTokenSource = new CancellationTokenSource(ti);
+            _cancellationTokenSource = new CancellationTokenSource(TI);
             while (true)
             {
                 try
@@ -179,7 +183,7 @@ namespace MyTools
 
             byte[] LenByte = new byte[1];
             List<byte> readByteList = new List<byte>();
-            _cancellationTokenSource = new CancellationTokenSource(ti);
+            _cancellationTokenSource = new CancellationTokenSource(TI);
             while (true)
             {
 
@@ -316,18 +320,7 @@ namespace MyTools
         }
 
 
-        public void TimeOutSet(string timeOut)
-        {
-            if (timeOut != "")
-            {
-                ti = Int32.Parse(timeOut);
-            }
-            else
-            {
-                ti = 0;
-            }
-
-        }
+       
 
     }
 }

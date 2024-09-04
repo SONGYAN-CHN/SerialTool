@@ -59,6 +59,8 @@ namespace SerialTool
             this.lblSend = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.gbxFunction = new System.Windows.Forms.GroupBox();
+            this.txtTI = new System.Windows.Forms.TextBox();
+            this.lblTI = new System.Windows.Forms.Label();
             this.gbxPortSet.SuspendLayout();
             this.gbxSendAndRecive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -409,7 +411,7 @@ namespace SerialTool
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(8, 20);
+            this.btnSave.Location = new System.Drawing.Point(6, 260);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(150, 23);
             this.btnSave.TabIndex = 8;
@@ -419,6 +421,8 @@ namespace SerialTool
             // 
             // gbxFunction
             // 
+            this.gbxFunction.Controls.Add(this.txtTI);
+            this.gbxFunction.Controls.Add(this.lblTI);
             this.gbxFunction.Controls.Add(this.btnSave);
             this.gbxFunction.Location = new System.Drawing.Point(12, 310);
             this.gbxFunction.Name = "gbxFunction";
@@ -426,6 +430,24 @@ namespace SerialTool
             this.gbxFunction.TabIndex = 2;
             this.gbxFunction.TabStop = false;
             this.gbxFunction.Text = "功能区";
+            // 
+            // txtTI
+            // 
+            this.txtTI.Location = new System.Drawing.Point(53, 14);
+            this.txtTI.Name = "txtTI";
+            this.txtTI.Size = new System.Drawing.Size(58, 21);
+            this.txtTI.TabIndex = 10;
+            this.txtTI.TextChanged += new System.EventHandler(this.txtTI_TextChanged);
+            this.txtTI.Leave += new System.EventHandler(this.txtTI_Leave);
+            // 
+            // lblTI
+            // 
+            this.lblTI.AutoSize = true;
+            this.lblTI.Location = new System.Drawing.Point(6, 23);
+            this.lblTI.Name = "lblTI";
+            this.lblTI.Size = new System.Drawing.Size(41, 12);
+            this.lblTI.TabIndex = 9;
+            this.lblTI.Text = "TI(ms)";
             // 
             // Form1
             // 
@@ -451,6 +473,7 @@ namespace SerialTool
             this.pnlSend.ResumeLayout(false);
             this.pnlSend.PerformLayout();
             this.gbxFunction.ResumeLayout(false);
+            this.gbxFunction.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -487,6 +510,8 @@ namespace SerialTool
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox gbxFunction;
+        private System.Windows.Forms.TextBox txtTI;
+        private System.Windows.Forms.Label lblTI;
     }
 }
 

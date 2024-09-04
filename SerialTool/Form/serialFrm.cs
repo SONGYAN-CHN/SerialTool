@@ -97,18 +97,23 @@ namespace SerialTool
             serialPort.BaudRate = int.Parse(cboBaudRate.Text);
             serialPort.DataBits = int.Parse(cboDataBits.Text);
 
+            
+           
 
             try
             {
                 serialPort.Open();
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
+                serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+                //Console.WriteLine(serialPort.get)
             }
             catch
             {
                 MessageBox.Show("串口打开失败！");
                 return;
             }
-            if (serialPort.IsOpen) txtAccept.AppendText(TimeGetTool.TextTime() + "串口打开成功！\r\n");
+            if (serialPort.IsOpen) 
+                txtAccept.AppendText(TimeGetTool.TextTime() + "串口打开成功！\r\n");
+            
 
             this.btnClosePort.Enabled = true;
             this.btnOpenPort.Enabled = false;
@@ -185,12 +190,14 @@ namespace SerialTool
             }
             btnSave.Enabled = false;
             stopwatch.Restart();
-            serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
+           
+            serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
+            serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
             string rcv = await sendTool.SendAndRcv(serialPort, this.txtSend.Text);
             txtAccept.AppendText($"{TimeGetTool.TextTime()}--发送-->{txtSend.Text}\r\n{TimeGetTool.TextTime()}--接收-->{rcv}\r\n");
             stopwatch.Stop();
             txtAccept.AppendText($"耗时：{stopwatch.ElapsedMilliseconds}ms\r\n");
-            serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             btnSave.Enabled = true;
 
         }
@@ -206,7 +213,7 @@ namespace SerialTool
                     this.chkAutoSend.Checked = false;
                     return;
                 }
-                serialPort.DataReceived -= new SerialDataReceivedEventHandler(TestRead);
+                serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
 
                 this.btnSend.Enabled = false;
                 tbxTI.Enabled = false;
@@ -217,7 +224,7 @@ namespace SerialTool
 
                     try
                     {
-                        stopwatch.Start();
+                        stopwatch.Restart();
                         await Task.Delay(Int32.Parse(tbxTI.Text) - 100);
                         string rcv = await sendTool.SendAndRcv(serialPort, this.txtSend.Text);
                         txtAccept.AppendText($"{TimeGetTool.TextTime()}--发送-->{txtSend.Text}\r\n{TimeGetTool.TextTime()}--接收-->{ rcv}\r\n");
@@ -238,7 +245,7 @@ namespace SerialTool
 
                 }
                 btnSave.Enabled = true;
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(TestRead);
+                serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             }
             else
             {
@@ -275,7 +282,7 @@ namespace SerialTool
             }
         }
 
-        private void TestRead(object sender, SerialDataReceivedEventArgs e)
+        private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
 
 
@@ -288,6 +295,25 @@ namespace SerialTool
 
 
 
+        }
+
+        private void txtTI_TextChanged(object sender, EventArgs e)
+        {
+
+            
+        }
+
+        private void txtTI_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                sendTool.TimeOutSet(txtTI.Text);
+            }
+            catch
+            {
+                txtTI.Text = "";
+                MessageBox.Show("正确输入TI");
+            }
         }
     }
 

@@ -17,6 +17,7 @@ namespace MyTools
         public int Numend { get; set; }
         public int LenInt { get; set; }
         public string LenStr { get; set; }
+        private int ti;
 
         /// <summary>
         /// 发送后接收功能
@@ -26,34 +27,35 @@ namespace MyTools
         /// <returns></returns>
         public async Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
         {
-            return await Task.Run(() => { 
-            try
+            return await Task.Run(() =>
             {
-                mutex.WaitOne();
-                
-                string rcv;
-                byte[] textSendByte = ConvertTool.StringToByte(txtSend);
-                SendWriteToPort(serialPort, textSendByte);
-                if (Is698Or645(textSendByte) == 1)
+                try
                 {
-                    return  rcv = Rcv698(serialPort);
+                    mutex.WaitOne();
 
+                    string rcv;
+                    byte[] textSendByte = ConvertTool.StringToByte(txtSend);
+                    SendWriteToPort(serialPort, textSendByte);
+                    if (Is698Or645(textSendByte) == 1)
+                    {
+                        return rcv = Rcv698(serialPort);
+
+                    }
+                    else if (Is698Or645(textSendByte) == 2)
+                    {
+                        return rcv = Rcv645(serialPort);
+
+                    }
+                    else
+                    {
+                        return "报文错误";
+                    }
                 }
-                else if (Is698Or645(textSendByte) == 2)
+                finally
                 {
-                    return rcv = Rcv645(serialPort);
 
+                    mutex.ReleaseMutex();
                 }
-                else
-                {
-                    return "报文错误";
-                }
-            }
-            finally
-            {
-
-                mutex.ReleaseMutex();
-            }
 
 
             });
@@ -100,7 +102,7 @@ namespace MyTools
         {
             List<byte> readByteList = new List<byte>();
             byte[] LenByte = new byte[2];
-            _cancellationTokenSource = new CancellationTokenSource(5000);
+            _cancellationTokenSource = new CancellationTokenSource(ti);
             while (true)
             {
                 try
@@ -177,7 +179,7 @@ namespace MyTools
 
             byte[] LenByte = new byte[1];
             List<byte> readByteList = new List<byte>();
-            _cancellationTokenSource = new CancellationTokenSource(5000);
+            _cancellationTokenSource = new CancellationTokenSource(ti);
             while (true)
             {
 
@@ -311,16 +313,22 @@ namespace MyTools
                 return "报文错误";
             }
 
+        }
 
 
-
-
-
-
+        public void TimeOutSet(string timeOut)
+        {
+            if (timeOut != "")
+            {
+                ti = Int32.Parse(timeOut);
+            }
+            else
+            {
+                ti = 0;
+            }
 
         }
 
     }
-
 }
 

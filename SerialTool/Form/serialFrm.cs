@@ -15,14 +15,14 @@ using System.Diagnostics;
 
 namespace SerialTool
 {
-    public partial class Form1 : Form
+    public partial class serialFrm : Form
     {
         public Mutex mutex = new Mutex();
         private SerialPort serialPort = new SerialPort();
         private SendTool sendTool = new SendTool();
         private Stopwatch stopwatch = new Stopwatch();
 
-        public Form1()
+        public serialFrm()
         {
             InitializeComponent();
             foreach (string com in SerialPort.GetPortNames())

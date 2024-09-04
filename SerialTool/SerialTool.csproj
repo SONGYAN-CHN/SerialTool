@@ -46,15 +46,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form\serialFrm.cs">
+    <Compile Include="form\mainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\serialFrm.Designer.cs">
+    <Compile Include="form\mainForm.Designer.cs">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="form\netFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="form\netFrm.Designer.cs">
+      <DependentUpon>netFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="form\serialFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="form\serialFrm.Designer.cs">
       <DependentUpon>serialFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form\serialFrm.resx">
+    <EmbeddedResource Include="form\mainForm.resx">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="form\netFrm.resx">
+      <DependentUpon>netFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="form\serialFrm.resx">
       <DependentUpon>serialFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

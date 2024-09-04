@@ -1,7 +1,7 @@
 ﻿
 namespace SerialTool
 {
-    partial class Form1
+    partial class serialFrm
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -74,6 +74,8 @@ namespace SerialTool
             // 
             // gbxPortSet
             // 
+            this.gbxPortSet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.gbxPortSet.Controls.Add(this.btnClosePort);
             this.gbxPortSet.Controls.Add(this.btnOpenPort);
             this.gbxPortSet.Controls.Add(this.btnRefresh);
@@ -88,6 +90,7 @@ namespace SerialTool
             this.gbxPortSet.Controls.Add(this.cboPort);
             this.gbxPortSet.Controls.Add(this.lbl端口号);
             this.gbxPortSet.Location = new System.Drawing.Point(12, 12);
+            this.gbxPortSet.MinimumSize = new System.Drawing.Size(165, 292);
             this.gbxPortSet.Name = "gbxPortSet";
             this.gbxPortSet.Size = new System.Drawing.Size(165, 292);
             this.gbxPortSet.TabIndex = 0;
@@ -421,6 +424,7 @@ namespace SerialTool
             // 
             // gbxFunction
             // 
+            this.gbxFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.gbxFunction.Controls.Add(this.txtTI);
             this.gbxFunction.Controls.Add(this.lblTI);
             this.gbxFunction.Controls.Add(this.btnSave);
@@ -449,7 +453,7 @@ namespace SerialTool
             this.lblTI.TabIndex = 9;
             this.lblTI.Text = "TI(ms)";
             // 
-            // Form1
+            // serialFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -457,8 +461,7 @@ namespace SerialTool
             this.Controls.Add(this.gbxFunction);
             this.Controls.Add(this.gbxSendAndRecive);
             this.Controls.Add(this.gbxPortSet);
-            this.MinimumSize = new System.Drawing.Size(931, 641);
-            this.Name = "Form1";
+            this.Name = "serialFrm";
             this.Text = "串口工具";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.gbxPortSet.ResumeLayout(false);

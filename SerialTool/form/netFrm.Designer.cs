@@ -44,13 +44,13 @@ namespace SerialTool
             this.txtSend = new System.Windows.Forms.TextBox();
             this.lblSend = new System.Windows.Forms.Label();
             this.gbxPort = new System.Windows.Forms.GroupBox();
-            this.lblProtocol = new System.Windows.Forms.Label();
-            this.cbxProtocol = new System.Windows.Forms.ComboBox();
-            this.lblServerIp = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.lblServerPort = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.txtServerPort = new System.Windows.Forms.TextBox();
+            this.lblServerPort = new System.Windows.Forms.Label();
+            this.txtServerIp = new System.Windows.Forms.TextBox();
+            this.lblServerIp = new System.Windows.Forms.Label();
+            this.cbxProtocol = new System.Windows.Forms.ComboBox();
+            this.lblProtocol = new System.Windows.Forms.Label();
             this.gbxSendAndRecive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -226,9 +226,9 @@ namespace SerialTool
             // gbxPort
             // 
             this.gbxPort.Controls.Add(this.btnConnect);
-            this.gbxPort.Controls.Add(this.textBox2);
+            this.gbxPort.Controls.Add(this.txtServerPort);
             this.gbxPort.Controls.Add(this.lblServerPort);
-            this.gbxPort.Controls.Add(this.textBox1);
+            this.gbxPort.Controls.Add(this.txtServerIp);
             this.gbxPort.Controls.Add(this.lblServerIp);
             this.gbxPort.Controls.Add(this.cbxProtocol);
             this.gbxPort.Controls.Add(this.lblProtocol);
@@ -239,14 +239,47 @@ namespace SerialTool
             this.gbxPort.TabStop = false;
             this.gbxPort.Text = "端口设置";
             // 
-            // lblProtocol
+            // btnConnect
             // 
-            this.lblProtocol.AutoSize = true;
-            this.lblProtocol.Location = new System.Drawing.Point(6, 25);
-            this.lblProtocol.Name = "lblProtocol";
-            this.lblProtocol.Size = new System.Drawing.Size(53, 12);
-            this.lblProtocol.TabIndex = 0;
-            this.lblProtocol.Text = "协议类型";
+            this.btnConnect.Location = new System.Drawing.Point(56, 193);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(105, 23);
+            this.btnConnect.TabIndex = 6;
+            this.btnConnect.Text = "打开连接";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnOpenOrClose_Click);
+            // 
+            // txtServerPort
+            // 
+            this.txtServerPort.Location = new System.Drawing.Point(8, 139);
+            this.txtServerPort.Name = "txtServerPort";
+            this.txtServerPort.Size = new System.Drawing.Size(153, 21);
+            this.txtServerPort.TabIndex = 5;
+            // 
+            // lblServerPort
+            // 
+            this.lblServerPort.AutoSize = true;
+            this.lblServerPort.Location = new System.Drawing.Point(6, 123);
+            this.lblServerPort.Name = "lblServerPort";
+            this.lblServerPort.Size = new System.Drawing.Size(77, 12);
+            this.lblServerPort.TabIndex = 4;
+            this.lblServerPort.Text = "服务器端口号";
+            // 
+            // txtServerIp
+            // 
+            this.txtServerIp.Location = new System.Drawing.Point(8, 90);
+            this.txtServerIp.Name = "txtServerIp";
+            this.txtServerIp.Size = new System.Drawing.Size(153, 21);
+            this.txtServerIp.TabIndex = 3;
+            // 
+            // lblServerIp
+            // 
+            this.lblServerIp.AutoSize = true;
+            this.lblServerIp.Location = new System.Drawing.Point(6, 74);
+            this.lblServerIp.Name = "lblServerIp";
+            this.lblServerIp.Size = new System.Drawing.Size(77, 12);
+            this.lblServerIp.TabIndex = 2;
+            this.lblServerIp.Text = "服务器IP地址";
             // 
             // cbxProtocol
             // 
@@ -262,47 +295,14 @@ namespace SerialTool
             this.cbxProtocol.Size = new System.Drawing.Size(153, 20);
             this.cbxProtocol.TabIndex = 1;
             // 
-            // lblServerIp
+            // lblProtocol
             // 
-            this.lblServerIp.AutoSize = true;
-            this.lblServerIp.Location = new System.Drawing.Point(6, 74);
-            this.lblServerIp.Name = "lblServerIp";
-            this.lblServerIp.Size = new System.Drawing.Size(77, 12);
-            this.lblServerIp.TabIndex = 2;
-            this.lblServerIp.Text = "服务器IP地址";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(8, 90);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(153, 21);
-            this.textBox1.TabIndex = 3;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(8, 139);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(153, 21);
-            this.textBox2.TabIndex = 5;
-            // 
-            // lblServerPort
-            // 
-            this.lblServerPort.AutoSize = true;
-            this.lblServerPort.Location = new System.Drawing.Point(6, 123);
-            this.lblServerPort.Name = "lblServerPort";
-            this.lblServerPort.Size = new System.Drawing.Size(77, 12);
-            this.lblServerPort.TabIndex = 4;
-            this.lblServerPort.Text = "服务器端口号";
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(56, 193);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(105, 23);
-            this.btnConnect.TabIndex = 6;
-            this.btnConnect.Text = "打开连接";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnOpenOrClose_Click);
+            this.lblProtocol.AutoSize = true;
+            this.lblProtocol.Location = new System.Drawing.Point(6, 25);
+            this.lblProtocol.Name = "lblProtocol";
+            this.lblProtocol.Size = new System.Drawing.Size(53, 12);
+            this.lblProtocol.TabIndex = 0;
+            this.lblProtocol.Text = "协议类型";
             // 
             // netFrm
             // 
@@ -346,9 +346,9 @@ namespace SerialTool
         private System.Windows.Forms.Label lblSend;
         private System.Windows.Forms.GroupBox gbxPort;
         private System.Windows.Forms.Label lblProtocol;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtServerPort;
         private System.Windows.Forms.Label lblServerPort;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtServerIp;
         private System.Windows.Forms.Label lblServerIp;
         private System.Windows.Forms.ComboBox cbxProtocol;
         private System.Windows.Forms.Button btnConnect;

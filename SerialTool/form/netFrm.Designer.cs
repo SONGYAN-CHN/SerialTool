@@ -49,7 +49,7 @@ namespace SerialTool
             this.lblServerPort = new System.Windows.Forms.Label();
             this.txtServerIp = new System.Windows.Forms.TextBox();
             this.lblServerIp = new System.Windows.Forms.Label();
-            this.cbxProtocol = new System.Windows.Forms.ComboBox();
+            this.cboProtocol = new System.Windows.Forms.ComboBox();
             this.lblProtocol = new System.Windows.Forms.Label();
             this.gbxSendAndRecive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -230,7 +230,7 @@ namespace SerialTool
             this.gbxPort.Controls.Add(this.lblServerPort);
             this.gbxPort.Controls.Add(this.txtServerIp);
             this.gbxPort.Controls.Add(this.lblServerIp);
-            this.gbxPort.Controls.Add(this.cbxProtocol);
+            this.gbxPort.Controls.Add(this.cboProtocol);
             this.gbxPort.Controls.Add(this.lblProtocol);
             this.gbxPort.Location = new System.Drawing.Point(10, 12);
             this.gbxPort.Name = "gbxPort";
@@ -281,19 +281,19 @@ namespace SerialTool
             this.lblServerIp.TabIndex = 2;
             this.lblServerIp.Text = "服务器IP地址";
             // 
-            // cbxProtocol
+            // cboProtocol
             // 
-            this.cbxProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxProtocol.FormattingEnabled = true;
-            this.cbxProtocol.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbxProtocol.Items.AddRange(new object[] {
+            this.cboProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboProtocol.FormattingEnabled = true;
+            this.cboProtocol.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cboProtocol.Items.AddRange(new object[] {
             "TCP Server",
             "TCP Client",
             "UDP"});
-            this.cbxProtocol.Location = new System.Drawing.Point(8, 41);
-            this.cbxProtocol.Name = "cbxProtocol";
-            this.cbxProtocol.Size = new System.Drawing.Size(153, 20);
-            this.cbxProtocol.TabIndex = 1;
+            this.cboProtocol.Location = new System.Drawing.Point(8, 41);
+            this.cboProtocol.Name = "cboProtocol";
+            this.cboProtocol.Size = new System.Drawing.Size(153, 20);
+            this.cboProtocol.TabIndex = 1;
             // 
             // lblProtocol
             // 
@@ -313,6 +313,7 @@ namespace SerialTool
             this.Controls.Add(this.gbxSendAndRecive);
             this.Name = "netFrm";
             this.Text = "netFrm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.netFrm_FormClosing);
             this.gbxSendAndRecive.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -350,7 +351,7 @@ namespace SerialTool
         private System.Windows.Forms.Label lblServerPort;
         private System.Windows.Forms.TextBox txtServerIp;
         private System.Windows.Forms.Label lblServerIp;
-        private System.Windows.Forms.ComboBox cbxProtocol;
+        private System.Windows.Forms.ComboBox cboProtocol;
         private System.Windows.Forms.Button btnConnect;
     }
 }

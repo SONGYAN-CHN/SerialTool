@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialTool", "SerialTool\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTools", "MyTools\MyTools.csproj", "{3071648B-13FF-4087-82FB-CEB9778998F1}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SerialToolv1.2_Setup", "..\..\SerialToolv1.2_Setup\SerialToolv1.2_Setup.vdproj", "{642FBBA9-B4F0-4E5B-B091-366DE6D7284E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,8 +21,6 @@ Global
 		{3071648B-13FF-4087-82FB-CEB9778998F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3071648B-13FF-4087-82FB-CEB9778998F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3071648B-13FF-4087-82FB-CEB9778998F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{642FBBA9-B4F0-4E5B-B091-366DE6D7284E}.Debug|Any CPU.ActiveCfg = Debug
-		{642FBBA9-B4F0-4E5B-B091-366DE6D7284E}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

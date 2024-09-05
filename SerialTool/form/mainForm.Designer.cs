@@ -29,6 +29,7 @@ namespace SerialTool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiSerial = new System.Windows.Forms.ToolStripMenuItem();
             this.网络调试助手ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,10 +77,12 @@ namespace SerialTool
             this.ClientSize = new System.Drawing.Size(919, 640);
             this.Controls.Add(this.pnlFrm);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(935, 679);
             this.Name = "mainForm";
-            this.Text = "mainForm";
+            this.Text = "华鹏测试";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

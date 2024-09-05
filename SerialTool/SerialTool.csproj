@@ -58,11 +58,11 @@
     <Compile Include="form\netFrm.Designer.cs">
       <DependentUpon>netFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="form\serialFrm.cs">
+    <Compile Include="form\SerialFrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="form\serialFrm.Designer.cs">
-      <DependentUpon>serialFrm.cs</DependentUpon>
+    <Compile Include="form\SerialFrm.Designer.cs">
+      <DependentUpon>SerialFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,8 +72,8 @@
     <EmbeddedResource Include="form\netFrm.resx">
       <DependentUpon>netFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="form\serialFrm.resx">
-      <DependentUpon>serialFrm.cs</DependentUpon>
+    <EmbeddedResource Include="form\SerialFrm.resx">
+      <DependentUpon>SerialFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

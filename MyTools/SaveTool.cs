@@ -19,10 +19,11 @@ namespace MyTools
         public static FileStream NameTimeSave() 
         {
             string s = Directory.GetCurrentDirectory();
-            Directory.CreateDirectory($@"{s}\TEXT");
-            string fileName = s+"\\TEXT\\" + TimeGetTool.FileTime() + ".txt";
+            Directory.CreateDirectory($@"{s}\SAVE_TEXT");
+            string fileName = s+"\\SAVE_TEXT\\" + TimeGetTool.FileTime() + ".txt";
             FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             return fs;
         }
+ 
     }
 }

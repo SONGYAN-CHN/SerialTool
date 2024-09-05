@@ -13,6 +13,7 @@ namespace SerialTool
 {
     public partial class netFrm : Form
     {
+        private ConfigFile _configFile = new ConfigFile();
         TcpClientHelper tcpClient = new TcpClientHelper();
 
         public netFrm()
@@ -20,8 +21,11 @@ namespace SerialTool
 
             InitializeComponent();
             tcpClient.messageReceived += TcpClientHelper_MessageReceived;
-            txtServerIp.Text = "192.168.60.65";
-            txtServerPort.Text = "6666";
+            _configFile.InitConfigFile();
+            cboProtocol.Text = _configFile.LoadData("协议类型");
+            txtServerIp.Text = _configFile.LoadData("服务器IP地址");
+            txtServerPort.Text = _configFile.LoadData("服务器端口号");
+            
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -72,6 +76,13 @@ namespace SerialTool
             {
                 txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Server]接收--->{e}\r\n");
             }));
+        }
+
+        private void netFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _configFile.SaveData("协议类型", cboProtocol.Text);
+            _configFile.SaveData("服务器IP地址", txtServerIp.Text);
+            _configFile.SaveData("服务器端口号", txtServerPort.Text);
         }
     }
 }

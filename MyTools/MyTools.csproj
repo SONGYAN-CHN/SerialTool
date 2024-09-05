@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigFile.cs" />
     <Compile Include="ConvertTool.cs" />
     <Compile Include="enum\E_mscheck.cs" />
     <Compile Include="SaveTool.cs" />

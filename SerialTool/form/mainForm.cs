@@ -7,17 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MyTools;
 
 namespace SerialTool
 {
     public partial class mainForm : Form
     {
-        serialFrm serialFrm = new serialFrm();
+        SerialFrm serialFrm = new SerialFrm();
         netFrm netFrm = new netFrm();
+        
         public mainForm()
         {
             InitializeComponent();
             OpenNewForm(serialFrm);
+            
         }
         /// <summary>
         /// 隐藏控件并展示新窗体控件
@@ -35,7 +38,7 @@ namespace SerialTool
             }
 
             newFrm.TopLevel = false;
-            
+
             newFrm.FormBorderStyle = FormBorderStyle.None;
             newFrm.Parent = this.pnlFrm;
             newFrm.Dock = DockStyle.Fill;
@@ -49,6 +52,12 @@ namespace SerialTool
         private void 网络调试助手ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenNewForm(netFrm);
+        }
+
+        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            serialFrm.Close();
+            netFrm.Close();
         }
     }
 }

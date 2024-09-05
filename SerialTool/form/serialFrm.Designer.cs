@@ -1,7 +1,7 @@
 ﻿
 namespace SerialTool
 {
-    partial class serialFrm
+    partial class SerialFrm
     {
         /// <summary>
         /// 必需的设计器变量。

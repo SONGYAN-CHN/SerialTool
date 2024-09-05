@@ -15,45 +15,49 @@ using System.Diagnostics;
 
 namespace SerialTool
 {
-    public partial class serialFrm : Form
+    public partial class SerialFrm : Form
     {
         public Mutex mutex = new Mutex();
         private SerialPort serialPort = new SerialPort();
         private SendTool sendTool = new SendTool();
         private Stopwatch stopwatch = new Stopwatch();
-
-        public serialFrm()
+        private ConfigFile _configFile = new ConfigFile();
+        public SerialFrm()
         {
+
             InitializeComponent();
+
             foreach (string com in SerialPort.GetPortNames())
                 this.cboPort.Items.Add(com);
-            cboPort.Text = SerialPort.GetPortNames()[0];
-            cboPort.Text = Properties.Settings.Default.cboPortText;
 
-            this.cboStopBits.Text = Properties.Settings.Default.cboStopBitsText;
-            this.cboCheck.Text = Properties.Settings.Default.cboCheckText;
-            this.cboDataBits.Text = Properties.Settings.Default.cboDataBitsText;
-            this.cboBaudRate.Text = Properties.Settings.Default.cboBaudRateText;
-            this.tbxTI.Text = Properties.Settings.Default.tbxTIText;
+            cboPort.Text = SerialPort.GetPortNames()[0];
+
+            _configFile.InitConfigFile();
+            cboBaudRate.Text = _configFile.LoadData("波特率");
+            cboDataBits.Text = _configFile.LoadData("数据位");
+            cboStopBits.Text = _configFile.LoadData("停止位");
+            cboCheck.Text = _configFile.LoadData("奇偶校验");
+            tbxTI.Text = _configFile.LoadData("自动发送TI");
 
 
         }
 
         /// <summary>
-        /// 关闭时将cbo中内容保存至Properties.Settings中
+        /// 关闭时将内容保存至config.xml中
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            Properties.Settings.Default.cboPortText = cboPort.Text;
-            Properties.Settings.Default.cboStopBitsText = cboStopBits.Text;
-            Properties.Settings.Default.cboCheckText = cboCheck.Text;
-            Properties.Settings.Default.cboDataBitsText = cboDataBits.Text;
-            Properties.Settings.Default.cboBaudRateText = cboBaudRate.Text;
-            Properties.Settings.Default.tbxTIText = tbxTI.Text;
-            Properties.Settings.Default.Save();
+            
+
+            _configFile.SaveData("波特率", cboBaudRate.Text);
+            _configFile.SaveData("数据位", cboDataBits.Text);
+            _configFile.SaveData("停止位", cboStopBits.Text);
+            _configFile.SaveData("奇偶校验", cboCheck.Text);
+            _configFile.SaveData("自动发送TI", tbxTI.Text);
+
         }
 
         private void btnOpenPort_Click(object sender, EventArgs e)

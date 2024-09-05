@@ -60,14 +60,13 @@ namespace SerialTool
         {
 
 
-            //停止位和奇偶校验赋值有新方法
             switch (cboStopBits.Text)
             {
                 case "1":
                     serialPort.StopBits = StopBits.One;
                     break;
                 /*
-                    PC不支持1.5
+                    //PC不支持1.5
                     case "1.5":
                         serialPort.StopBits = StopBits.OnePointFive;
                         break;
@@ -77,7 +76,7 @@ namespace SerialTool
                     break;
 
             }
-            // 0 - 无校验
+            //0 - 无校验
             //1 - 偶校验
             //2 - 奇校验
             switch (cboCheck.Text)
@@ -97,23 +96,22 @@ namespace SerialTool
             serialPort.BaudRate = int.Parse(cboBaudRate.Text);
             serialPort.DataBits = int.Parse(cboDataBits.Text);
 
-            
-           
+
+
 
             try
             {
                 serialPort.Open();
                 serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-                //Console.WriteLine(serialPort.get)
             }
             catch
             {
                 MessageBox.Show("串口打开失败！");
                 return;
             }
-            if (serialPort.IsOpen) 
+            if (serialPort.IsOpen)
                 txtAccept.AppendText(TimeGetTool.TextTime() + "串口打开成功！\r\n");
-            
+
 
             this.btnClosePort.Enabled = true;
             this.btnOpenPort.Enabled = false;
@@ -126,6 +124,7 @@ namespace SerialTool
 
         private void btnClosePort_Click(object sender, EventArgs e)
         {
+
             serialPort.Close();
             if (!serialPort.IsOpen) txtAccept.AppendText(TimeGetTool.TextTime() + "串口关闭成功！\r\n");
             this.btnClosePort.Enabled = false;
@@ -190,7 +189,7 @@ namespace SerialTool
             }
             btnSave.Enabled = false;
             stopwatch.Restart();
-           
+
             serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
             serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
             string rcv = await sendTool.SendAndRcv(serialPort, this.txtSend.Text);
@@ -297,7 +296,7 @@ namespace SerialTool
 
         }
 
-      
+
     }
 
 }

@@ -50,15 +50,15 @@ namespace SerialTool
             this.txtAccept = new System.Windows.Forms.TextBox();
             this.lblAccept = new System.Windows.Forms.Label();
             this.pnlSend = new System.Windows.Forms.Panel();
-            this.lblMs = new System.Windows.Forms.Label();
-            this.tbxTI = new System.Windows.Forms.TextBox();
-            this.chkAutoSend = new System.Windows.Forms.CheckBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.btnSeClear = new System.Windows.Forms.Button();
             this.txtSend = new System.Windows.Forms.TextBox();
             this.lblSend = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.gbxFunction = new System.Windows.Forms.GroupBox();
+            this.tbxTI = new System.Windows.Forms.TextBox();
+            this.lblMs = new System.Windows.Forms.Label();
+            this.chkAutoSend = new System.Windows.Forms.CheckBox();
             this.gbxPortSet.SuspendLayout();
             this.gbxSendAndRecive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -334,38 +334,6 @@ namespace SerialTool
             this.pnlSend.Size = new System.Drawing.Size(729, 139);
             this.pnlSend.TabIndex = 1;
             // 
-            // lblMs
-            // 
-            this.lblMs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblMs.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.lblMs.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMs.Location = new System.Drawing.Point(145, 119);
-            this.lblMs.Name = "lblMs";
-            this.lblMs.Size = new System.Drawing.Size(105, 14);
-            this.lblMs.TabIndex = 7;
-            this.lblMs.Text = "ms(最低100ms)";
-            // 
-            // tbxTI
-            // 
-            this.tbxTI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbxTI.Location = new System.Drawing.Point(81, 115);
-            this.tbxTI.Name = "tbxTI";
-            this.tbxTI.Size = new System.Drawing.Size(58, 21);
-            this.tbxTI.TabIndex = 6;
-            this.tbxTI.Leave += new System.EventHandler(this.tbxTI_Leave);
-            // 
-            // chkAutoSend
-            // 
-            this.chkAutoSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkAutoSend.AutoSize = true;
-            this.chkAutoSend.Location = new System.Drawing.Point(3, 120);
-            this.chkAutoSend.Name = "chkAutoSend";
-            this.chkAutoSend.Size = new System.Drawing.Size(72, 16);
-            this.chkAutoSend.TabIndex = 5;
-            this.chkAutoSend.Text = "自动发送";
-            this.chkAutoSend.UseVisualStyleBackColor = true;
-            this.chkAutoSend.CheckedChanged += new System.EventHandler(this.chkAutoSend_CheckedChanged);
-            // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -431,7 +399,39 @@ namespace SerialTool
             this.gbxFunction.TabStop = false;
             this.gbxFunction.Text = "功能区";
             // 
-            // serialFrm
+            // tbxTI
+            // 
+            this.tbxTI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbxTI.Location = new System.Drawing.Point(81, 115);
+            this.tbxTI.Name = "tbxTI";
+            this.tbxTI.Size = new System.Drawing.Size(58, 21);
+            this.tbxTI.TabIndex = 6;
+            this.tbxTI.Leave += new System.EventHandler(this.tbxTI_Leave);
+            // 
+            // lblMs
+            // 
+            this.lblMs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblMs.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.lblMs.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblMs.Location = new System.Drawing.Point(145, 119);
+            this.lblMs.Name = "lblMs";
+            this.lblMs.Size = new System.Drawing.Size(105, 14);
+            this.lblMs.TabIndex = 7;
+            this.lblMs.Text = "ms(最低100ms)";
+            // 
+            // chkAutoSend
+            // 
+            this.chkAutoSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkAutoSend.AutoSize = true;
+            this.chkAutoSend.Location = new System.Drawing.Point(3, 120);
+            this.chkAutoSend.Name = "chkAutoSend";
+            this.chkAutoSend.Size = new System.Drawing.Size(72, 16);
+            this.chkAutoSend.TabIndex = 5;
+            this.chkAutoSend.Text = "自动发送";
+            this.chkAutoSend.UseVisualStyleBackColor = true;
+            this.chkAutoSend.CheckedChanged += new System.EventHandler(this.chkAutoSend_CheckedChanged);
+            // 
+            // SerialFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -439,7 +439,7 @@ namespace SerialTool
             this.Controls.Add(this.gbxFunction);
             this.Controls.Add(this.gbxSendAndRecive);
             this.Controls.Add(this.gbxPortSet);
-            this.Name = "serialFrm";
+            this.Name = "SerialFrm";
             this.Text = "串口工具";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.gbxPortSet.ResumeLayout(false);
@@ -483,13 +483,13 @@ namespace SerialTool
         private System.Windows.Forms.Label lblAccept;
         private System.Windows.Forms.Button btnSeClear;
         private System.Windows.Forms.Button btnAcClear;
-        private System.Windows.Forms.CheckBox chkAutoSend;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.Label lblMs;
-        private System.Windows.Forms.TextBox tbxTI;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox gbxFunction;
+        private System.Windows.Forms.Label lblMs;
+        private System.Windows.Forms.TextBox tbxTI;
+        private System.Windows.Forms.CheckBox chkAutoSend;
     }
 }
 

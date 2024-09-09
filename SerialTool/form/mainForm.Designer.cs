@@ -51,15 +51,15 @@ namespace SerialTool
             // tsmiSerial
             // 
             this.tsmiSerial.Name = "tsmiSerial";
-            this.tsmiSerial.Size = new System.Drawing.Size(68, 21);
-            this.tsmiSerial.Text = "串口工具";
+            this.tsmiSerial.Size = new System.Drawing.Size(92, 21);
+            this.tsmiSerial.Text = "串口通信工具";
             this.tsmiSerial.Click += new System.EventHandler(this.tsmiSerial_Click);
             // 
             // 网络调试助手ToolStripMenuItem
             // 
             this.网络调试助手ToolStripMenuItem.Name = "网络调试助手ToolStripMenuItem";
             this.网络调试助手ToolStripMenuItem.Size = new System.Drawing.Size(92, 21);
-            this.网络调试助手ToolStripMenuItem.Text = "网络调试助手";
+            this.网络调试助手ToolStripMenuItem.Text = "网络通信工具";
             this.网络调试助手ToolStripMenuItem.Click += new System.EventHandler(this.网络调试助手ToolStripMenuItem_Click);
             // 
             // pnlFrm
@@ -81,7 +81,7 @@ namespace SerialTool
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(935, 679);
             this.Name = "mainForm";
-            this.Text = "华鹏测试";
+            this.Text = "通信工具";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

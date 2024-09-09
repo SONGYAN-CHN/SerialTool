@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Net;
 
 namespace MyTools
 {
@@ -32,6 +33,7 @@ namespace MyTools
             }
             try
             {
+                //client用的hostname连接，后续sever例子会用ipaddress可能会连接不上！！！
                 _client = new TcpClient();
                 _client.Connect(ipaddr, port);
                 _isConnected = true;
@@ -112,6 +114,7 @@ namespace MyTools
             {
                 string message = gb18030Encoding.GetString(buffer, 0, bytesRead).TrimEnd('\0'); 
                 messageReceived?.Invoke(this, message); 
+
             }
         }
 

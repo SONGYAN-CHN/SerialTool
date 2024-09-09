@@ -49,9 +49,7 @@ namespace SerialTool
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-            
-
+ 
             _configFile.SaveData("波特率", cboBaudRate.Text);
             _configFile.SaveData("数据位", cboDataBits.Text);
             _configFile.SaveData("停止位", cboStopBits.Text);

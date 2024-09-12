@@ -60,12 +60,14 @@ namespace MyTools
             {
 
                 _isConnected = false;
-                if (_client.GetStream() != null)
+                if (_client != null)
                 {
-                    _client.GetStream().Close();
+                    if (_client.GetStream() != null)
+                    {
+                        _client.GetStream().Close();
+                    }
+                    _client.Close();
                 }
-                _client.Close();
-
                 return "断开连接";
             }
             catch

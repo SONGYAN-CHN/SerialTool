@@ -25,14 +25,33 @@ namespace SerialTool
             InitializeComponent();
             _configFile.InitConfigFile();
             cboProtocol.Text = _configFile.LoadData("协议类型");
-            txtIp.Text = TcpServerHelper.GetIpaddr();
+            if (cboProtocol.Text == "TCP Server")
+            {
+                txtIp.Text = TcpServerHelper.GetIpaddr();
+            }
+            else
+            {
+                txtIp.Text = _configFile.LoadData("IP地址");
+            }
+
             txtPort.Text = _configFile.LoadData("端口号");
         }
 
         private void netFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _configFile.SaveData("协议类型", cboProtocol.Text);
+            _configFile.SaveData("IP地址", txtIp.Text);
             _configFile.SaveData("端口号", txtPort.Text);
+
+
+
+            if (tcpClient != null)
+            {
+                tcpClient.messageReceived -= TcpClientHelper_MessageReceived;
+                tcpClient.Disconnect();
+            }
+            
+
         }
 
         private void btnAcClear_Click(object sender, EventArgs e)
@@ -123,7 +142,7 @@ namespace SerialTool
 
                 if (btnStar.Text == "启动监听")
                 {
-                    if(txtIp.Text!=TcpServerHelper.GetIpaddr())
+                    if (txtIp.Text != TcpServerHelper.GetIpaddr())
                     {
                         txtIp.Text = TcpServerHelper.GetIpaddr();
                         MessageBox.Show("本机IP地址不正确！");
@@ -175,6 +194,7 @@ namespace SerialTool
                 btnStar.Text = "启动监听";
                 gbxClient.Enabled = true;
                 gbxClient.Visible = true;
+                txtIp.Text = TcpServerHelper.GetIpaddr();
 
 
             }

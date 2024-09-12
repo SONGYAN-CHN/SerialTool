@@ -298,6 +298,7 @@ namespace SerialTool
             this.cboClient.Size = new System.Drawing.Size(149, 20);
             this.cboClient.TabIndex = 1;
             this.cboClient.Text = "All Clients";
+            this.cboClient.DropDown += new System.EventHandler(this.cboClient_DropDown);
             // 
             // btnClose
             // 
@@ -310,6 +311,7 @@ namespace SerialTool
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "断开";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // netFrm
             // 

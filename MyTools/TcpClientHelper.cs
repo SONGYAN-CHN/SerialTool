@@ -38,7 +38,7 @@ namespace MyTools
                 _client.Connect(ipaddr, port);
                 _isConnected = true;
 
-                
+
                 return "连接成功";
             }
             catch
@@ -58,9 +58,14 @@ namespace MyTools
         {
             try
             {
-                _client.Close();
+
                 _isConnected = false;
-                
+                if (_client.GetStream() != null)
+                {
+                    _client.GetStream().Close();
+                }
+                _client.Close();
+
                 return "断开连接";
             }
             catch
@@ -78,7 +83,7 @@ namespace MyTools
         {
             if (!_isConnected)
             {
-                return "未连接"; 
+                return "未连接";
             }
             try
             {
@@ -87,12 +92,12 @@ namespace MyTools
                 _stream.Write(data, 0, data.Length);
                 return "发送成功";
             }
-            catch(System.IO.IOException)
+            catch (System.IO.IOException)
             {
                 _isConnected = false;
                 return "连接断开";
             }
-            
+
         }
 
         public void StartListening()
@@ -104,7 +109,7 @@ namespace MyTools
             }
         }
 
-    
+
         public void ListenDataReceived()
         {
             _stream = _client.GetStream();
@@ -112,8 +117,8 @@ namespace MyTools
             int bytesRead;
             while (_isConnected && (bytesRead = _stream.Read(buffer, 0, buffer.Length)) > 0)
             {
-                string message = gb18030Encoding.GetString(buffer, 0, bytesRead).TrimEnd('\0'); 
-                messageReceived?.Invoke(this, message); 
+                string message = gb18030Encoding.GetString(buffer, 0, bytesRead).TrimEnd('\0');
+                messageReceived?.Invoke(this, message);
 
             }
         }

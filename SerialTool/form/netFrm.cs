@@ -25,14 +25,13 @@ namespace SerialTool
             InitializeComponent();
             _configFile.InitConfigFile();
             cboProtocol.Text = _configFile.LoadData("协议类型");
-            txtIp.Text = _configFile.LoadData("IP地址");
+            txtIp.Text = TcpServerHelper.GetIpaddr();
             txtPort.Text = _configFile.LoadData("端口号");
         }
 
         private void netFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _configFile.SaveData("协议类型", cboProtocol.Text);
-            _configFile.SaveData("IP地址", txtIp.Text);
             _configFile.SaveData("端口号", txtPort.Text);
         }
 
@@ -57,11 +56,21 @@ namespace SerialTool
                 {
                     btnStar.Text = "建立连接";
                 }
-                txtAccept.AppendText(TimeGetTool.TextTime() + sendResult + "\r\n");
+                txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Client]发送---> {sendResult }\r\n");
             }
             else if (cboProtocol.Text == "TCP Server")
             {
-                //string sendResult = tcpServer.SendToClient(tcpServer.c);
+                string sendResult;
+                if (cboClient.Text == "All Clients")
+                {
+                    sendResult = tcpServer.AllSend(txtSend.Text);
+
+                }
+                else
+                {
+                    sendResult = tcpServer.SingleSend(cboClient.Text, txtSend.Text);
+                }
+                txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Server ]发送---> {sendResult }\r\n");
             }
 
         }
@@ -81,8 +90,8 @@ namespace SerialTool
                     txtIp.Enabled = true;
                     txtPort.Enabled = true;
 
-                    string vs =tcpClient.Disconnect();
-                    txtAccept.AppendText($"{TimeGetTool.TextTime()}{vs}\r\n");
+                    string vs = tcpClient.Disconnect();
+                    txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Client]{vs}\r\n");
 
                 }
                 else
@@ -91,7 +100,7 @@ namespace SerialTool
 
                     int port = Int32.Parse(txtPort.Text);
                     string vs = tcpClient.Connect(txtIp.Text, port);
-                    txtAccept.AppendText($"{TimeGetTool.TextTime()}{vs}\r\n");
+                    txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Client]{vs}\r\n");
                     if (tcpClient._isConnected == false)
                     {
                         return;
@@ -108,25 +117,30 @@ namespace SerialTool
 
                 }
             }
+
             else if (cboProtocol.Text == "TCP Server")
             {
 
-
-
                 if (btnStar.Text == "启动监听")
                 {
+                    if(txtIp.Text!=TcpServerHelper.GetIpaddr())
+                    {
+                        txtIp.Text = TcpServerHelper.GetIpaddr();
+                        MessageBox.Show("本机IP地址不正确！");
+                        return;
+                    }
                     btnStar.Text = "停止监听";
                     cboProtocol.Enabled = false;
                     txtIp.Enabled = false;
                     txtPort.Enabled = false;
-                    txtAccept.AppendText($"{TimeGetTool.TextTime()}启动监听\r\n");
+                    txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Server]启动监听\r\n");
 
 
                     int port = Int32.Parse(txtPort.Text);
                     tcpServer = new TcpServerHelper(txtIp.Text, port);
                     tcpServer.OnClientConnected += TcpServer_OnClientConnected;
                     tcpServer.messageReceived += TcpServertHelper_MessageReceived;
-                    
+
                     await tcpServer.StartListen();
 
 
@@ -138,10 +152,11 @@ namespace SerialTool
                     cboProtocol.Enabled = true;
                     txtIp.Enabled = true;
                     txtPort.Enabled = true;
-                    txtAccept.AppendText($"{TimeGetTool.TextTime()}停止监听\r\n");
+                    txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Server]停止监听\r\n");
                     tcpServer.Stop();
                     tcpServer.OnClientConnected -= TcpServer_OnClientConnected;
                     tcpServer.messageReceived -= TcpServertHelper_MessageReceived;
+                    tcpServer = null;
                 }
 
             }
@@ -190,17 +205,7 @@ namespace SerialTool
         private void TcpClientHelper_MessageReceived(object sender, string e)
         {
 
-            // 更新UI必须在主线程中进行
-            Invoke(new MethodInvoker(() =>
-            {
-                txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Client]接收--->{e}\r\n");
-            }));
 
-        }
-        private void TcpServertHelper_MessageReceived(object sender, string e)
-        {
-
-            // 更新UI必须在主线程中进行
             Invoke(new MethodInvoker(() =>
             {
                 txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Server]接收--->{e}\r\n");
@@ -208,7 +213,33 @@ namespace SerialTool
 
         }
 
+        /// <summary>
+        /// TCP server消息接收处理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="client"></param>
+        private void TcpServertHelper_MessageReceived(object sender, string e, TcpClient client)
+        {
 
+
+            Invoke(new MethodInvoker(() =>
+            {
+                var remoteEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
+                string ipAddress = remoteEndPoint.Address.ToString();
+                int port = remoteEndPoint.Port;
+                txtAccept.AppendText($"{TimeGetTool.TextTime()}[TCP Client][{ipAddress} {port}]接收--->{e}\r\n");
+
+            }));
+
+        }
+
+        /// <summary>
+        /// tcpserver客户机连接处理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        /// <param name="client"></param>
         private void TcpServer_OnClientConnected(object sender, string message, TcpClient client)
         {
             Invoke(new Action(() =>
@@ -221,5 +252,32 @@ namespace SerialTool
             }));
         }
 
+        private void cboClient_DropDown(object sender, EventArgs e)
+        {
+
+            cboClient.Items.Clear();
+            cboClient.Items.Add("All Clients");
+            if (tcpServer != null)
+            {
+                List<string> ip_portList = tcpServer.DictionarykeyToString();
+                foreach (var ip_port in ip_portList)
+                {
+                    if (!cboClient.Items.Contains(ip_port))
+                    {
+                        cboClient.Items.Add(ip_port);
+                    }
+                }
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
+            foreach (var vs in tcpServer.CloseClienConnect(cboClient.Text))
+            {
+                txtAccept.AppendText($"{TimeGetTool.TextTime()}客户端[{vs.Item1} {vs.Item2}]已断开\r\n");
+            }
+            cboClient.Text = "All Clients";
+        }
     }
 }

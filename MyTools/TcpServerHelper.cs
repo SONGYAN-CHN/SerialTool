@@ -10,17 +10,22 @@ using System.Threading;
 namespace MyTools
 {
     public delegate void ClientConnectedHandler(object sender, string message, TcpClient client);
+    public delegate void ReceiveClientMessageOnly(object sender, string message, TcpClient client);
     public class TcpServerHelper
     {
         Encoding gb18030Encoding = Encoding.GetEncoding("GB18030");
-
         public event ClientConnectedHandler OnClientConnected;
-        public event EventHandler<string> messageReceived;
-
+        public event ReceiveClientMessageOnly messageReceived;
         private TcpListener _listener;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly Dictionary<(string, int), TcpClient> _connectedClientsDictionary = new Dictionary<(string, int), TcpClient>();
 
+        #region 主要功能函数
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="ipaddr"></param>
+        /// <param name="port"></param>
         public TcpServerHelper(string ipaddr, int port)
         {
             IPAddress ip = IPAddress.Parse(ipaddr);
@@ -41,11 +46,8 @@ namespace MyTools
         {
             try
             {
-                
-                
                 _cancellationTokenSource = new CancellationTokenSource();
                 _listener.Start();
-
 
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
@@ -63,7 +65,7 @@ namespace MyTools
 
                         lock (_connectedClientsDictionary)
                         {
-                            _connectedClientsDictionary.Add((clientIpaddr,clienttPort),client);
+                            _connectedClientsDictionary.Add((clientIpaddr, clienttPort), client);
                         }
 
                         Task.Run(async () =>
@@ -86,24 +88,22 @@ namespace MyTools
                     }
                 }
             }
-
+            //已在逻辑上避免，此异常一般不会触发
+            catch (System.Reflection.TargetInvocationException)
+            {
+                Console.WriteLine("异常");
+            }
             finally
             {
-               
-                    _listener = null;
-               
-                
-
+                _listener = null;
             }
-
-
         }
 
-       /// <summary>
-       /// 停止监听函数
-       /// 改变监听中while循环判断标志
-       /// 通过字典关闭所有连接的服务器并清空字典
-       /// </summary>
+        /// <summary>
+        /// 停止监听函数
+        /// 改变监听中while循环判断标志
+        /// 通过字典关闭所有连接的服务器并清空字典
+        /// </summary>
         public void Stop()
         {
 
@@ -120,8 +120,117 @@ namespace MyTools
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = null;
 
-            
+        }
 
+        /// <summary>
+        /// 全部发送功能
+        /// 字典里已经连接的全部发送
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public string AllSend(string message)
+        {
+            int i = 0;
+            lock (_connectedClientsDictionary)
+            {
+                foreach (var ipandport in _connectedClientsDictionary)
+                {
+
+                    NetworkStream stream = ipandport.Value.GetStream();
+
+                    byte[] data = gb18030Encoding.GetBytes(message);
+                    stream.Write(data, 0, data.Length);
+                    i++;
+
+                }
+
+                if (i != 0)
+                {
+                    return "发送成功";
+                }
+                else
+                {
+                    return "未有客服端建立链接";
+                }
+            }
+        }
+
+        /// <summary>
+        /// 单个客户机发送
+        /// 选择一个客户机进行对应的发送
+        /// </summary>
+        /// <param name="ip_port"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public string SingleSend(string ip_port, string message)
+        {
+            lock (_connectedClientsDictionary)
+            {
+                (string, int) key = FindDictionaryKey(ip_port);
+
+                TcpClient sendClient = _connectedClientsDictionary[key];
+                NetworkStream stream = sendClient.GetStream();
+
+                byte[] data = gb18030Encoding.GetBytes(message);
+                stream.Write(data, 0, data.Length);
+
+                return "发送成功";
+            }
+
+        }
+
+        /// <summary>
+        /// 主动断开客户端连接
+        /// </summary>
+        /// <param name="ip_port"></param>
+        /// <returns></returns>
+        public List<Tuple<string, int>> CloseClienConnect(string ip_port)
+        {
+            List<Tuple<string, int>> keyList = new List<Tuple<string, int>>();
+            Tuple<string, int> tuple;
+            lock (_connectedClientsDictionary)
+            {
+                if (ip_port == "All Clients")
+                {
+
+                    foreach (var client_Ip_Port in _connectedClientsDictionary)
+                    {
+                        client_Ip_Port.Value.Close();
+                        tuple = client_Ip_Port.Key.ToTuple();
+                        keyList.Add(tuple);
+
+                    }
+                    _connectedClientsDictionary.Clear();
+                    return keyList;
+                }
+                else
+                {
+                    (string, int) key = FindDictionaryKey(ip_port);
+                    TcpClient clien = _connectedClientsDictionary[key];
+                    clien.Close();
+                    tuple = key.ToTuple();
+                    keyList.Add(tuple);
+                    _connectedClientsDictionary.Remove(key);
+                    return keyList;
+                }
+            }
+        }
+        #endregion
+
+        #region 辅助功能性函数
+        /// <summary>
+        /// 字典存储连接至服务器的客服机key值转换成string
+        /// key包含ip和port
+        /// </summary>
+        /// <returns></returns>
+        public List<string> DictionarykeyToString()
+        {
+            lock (_connectedClientsDictionary)
+            {
+                List<string> keysAsStrings = _connectedClientsDictionary.Keys.Select(key => key.ToString()).ToList();
+
+                return keysAsStrings;
+            }
         }
 
         /// <summary>
@@ -143,34 +252,64 @@ namespace MyTools
                     if (bytesRead > 0)
                     {
                         string message = gb18030Encoding.GetString(buffer, 0, bytesRead).TrimEnd('\0');
-                        messageReceived?.Invoke(this, message);
+
+                        messageReceived?.Invoke(this, message, client);
+
+                        continue;
                     }
+                    lock (_connectedClientsDictionary)
+                    {
+                        var remoteEndPoint = (IPEndPoint)client.Client.RemoteEndPoint;
+                        _connectedClientsDictionary.Remove((remoteEndPoint.Address.ToString(), remoteEndPoint.Port));
+                    }
+
+                    client.Close();
                 }
             }
 
-            //根据KEY值移除对应的客户端，在一个客户端结束消息监听时代表客户端断开了链接
+        }
+
+        /// <summary>
+        /// 用string类型ip和port去寻找字典中对应的key值返回
+        /// </summary>
+        /// <param name="strKey"></param>
+        /// <returns></returns>
+        private (string, int) FindDictionaryKey(string strKey)
+        {
             lock (_connectedClientsDictionary)
             {
-                var remoteEndPoint = (IPEndPoint)client.Client.RemoteEndPoint;
-                _connectedClientsDictionary.Remove((remoteEndPoint.Address.ToString(), remoteEndPoint.Port));
+                (string, int) key = ("0", 0);
+                foreach (var key1 in _connectedClientsDictionary.Keys)
+                {
+                    string keystr = key1.ToString();
+                    if (keystr == strKey)
+                    {
+                        key = key1;
+                        break;
+                    }
+                }
+
+                return key;
             }
-            client.Close();
         }
 
-        //等会加入字典选择对应字典中的client发送消息也可以全部发
-        public string SendToClient(TcpClient client, string message)
+        /// <summary>
+        /// 获取本机IP地址
+        /// </summary>
+        /// <returns></returns>
+        public static string GetIpaddr()
         {
-            using (NetworkStream stream = client.GetStream())
+            string hostName = Dns.GetHostName();
+            IPAddress[] addresses = Dns.GetHostAddresses(hostName);
+            foreach (var address in addresses)
             {
-                byte[] data = gb18030Encoding.GetBytes(message);
-                stream.Write(data, 0, data.Length);
-                return "发送成功";
+                if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return address.ToString();
+                }
             }
+            return "";
         }
-
-        
-
-
-
+        #endregion
     }
 }

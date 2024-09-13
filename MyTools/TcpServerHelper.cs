@@ -12,7 +12,7 @@ namespace MyTools
     public delegate void ClientConnectedHandler(object sender, string message, TcpClient client);
     public delegate void ReceiveClientMessageOnly(object sender, string message, TcpClient client);
     public class TcpServerHelper
-    {
+    {//啊实打实大撒大声地
         Encoding gb18030Encoding = Encoding.GetEncoding("GB18030");
         public event ClientConnectedHandler OnClientConnected;
         public event ReceiveClientMessageOnly messageReceived;

@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading;
 
 namespace MyTools
-{//aaaa
+{
     public delegate void ClientConnectedHandler(object sender, string message, TcpClient client);
     public delegate void ReceiveClientMessageOnly(object sender, string message, TcpClient client);
     public class TcpServerHelper

@@ -33,7 +33,6 @@ namespace MyTools
             }
             try
             {
-                //client用的hostname连接，后续sever例子会用ipaddress可能会连接不上！！！
                 _client = new TcpClient();
                 _client.Connect(ipaddr, port);
                 _isConnected = true;
@@ -90,7 +89,9 @@ namespace MyTools
             try
             {
                 _stream = _client.GetStream();
-                byte[] data = gb18030Encoding.GetBytes(message);
+
+                byte[] data = Encoding.ASCII.GetBytes(message);
+                //byte[] data = gb18030Encoding.GetBytes(message);
                 _stream.Write(data, 0, data.Length);
                 return "发送成功";
             }
@@ -119,7 +120,8 @@ namespace MyTools
             int bytesRead;
             while (_isConnected && (bytesRead = _stream.Read(buffer, 0, buffer.Length)) > 0)
             {
-                string message = gb18030Encoding.GetString(buffer, 0, bytesRead).TrimEnd('\0');
+                //string message = gb18030Encoding.GetString(buffer, 0, bytesRead).TrimEnd('\0');
+                string message = Encoding.ASCII.GetString(buffer, 0, bytesRead).TrimEnd('\0');
                 messageReceived?.Invoke(this, message);
 
             }

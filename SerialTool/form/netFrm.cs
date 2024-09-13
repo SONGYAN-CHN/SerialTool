@@ -299,5 +299,11 @@ namespace SerialTool
             }
             cboClient.Text = "All Clients";
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var s= _20SocketApi.ObjMeterFormalInitSession(1, "1010000148CEF12","00000767",tcpClient);
+            txtAccept.AppendText($"{TimeGetTool.TextTime()}{s}\r\n");
+        }
     }
 }

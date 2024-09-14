@@ -15,7 +15,7 @@ namespace SerialTool
 {
     public partial class netFrm : Form
     {
-        private ConfigFile _configFile = new ConfigFile();
+       
         TcpClientHelper tcpClient = new TcpClientHelper();
         TcpServerHelper tcpServer;
 
@@ -23,25 +23,25 @@ namespace SerialTool
         {
 
             InitializeComponent();
-            _configFile.InitConfigFile();
-            cboProtocol.Text = _configFile.LoadData("协议类型");
+            ConfigFile.InitConfigFile();
+            cboProtocol.Text = ConfigFile.LoadData("协议类型");
             if (cboProtocol.Text == "TCP Server")
             {
                 txtIp.Text = TcpServerHelper.GetIpaddr();
             }
             else
             {
-                txtIp.Text = _configFile.LoadData("IP地址");
+                txtIp.Text = ConfigFile.LoadData("IP地址");
             }
 
-            txtPort.Text = _configFile.LoadData("端口号");
+            txtPort.Text = ConfigFile.LoadData("端口号");
         }
 
         private void netFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _configFile.SaveData("协议类型", cboProtocol.Text);
-            _configFile.SaveData("IP地址", txtIp.Text);
-            _configFile.SaveData("端口号", txtPort.Text);
+            ConfigFile.SaveData("协议类型", cboProtocol.Text);
+            ConfigFile.SaveData("IP地址", txtIp.Text);
+            ConfigFile.SaveData("端口号", txtPort.Text);
 
 
 

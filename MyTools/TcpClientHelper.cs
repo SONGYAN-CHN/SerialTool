@@ -8,7 +8,7 @@ using System.Net;
 
 namespace MyTools
 {
-    public class TcpClientHelper
+    public  class TcpClientHelper
     {
 
         Encoding gb18030Encoding = Encoding.GetEncoding("GB18030");

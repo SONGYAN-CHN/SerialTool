@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyTools
 {
-    public class ConvertTool
+    public static class ConvertTool
     {
 
         /// <summary>

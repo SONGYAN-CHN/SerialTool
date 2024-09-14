@@ -9,8 +9,43 @@ using System.Threading;
 
 namespace MyTools
 {
-    
 
+    public class SerialOperateTool
+    {
+        public static SerialPort serialPort = new SerialPort();
+        private static SendTool sendTool = new SendTool();
+        public SerialOperateTool(string port, string baudrate, string databits, string stopbits, string parity)
+        {
+            serialPort.PortName = port;
+            serialPort.BaudRate = int.Parse(baudrate);
+            serialPort.DataBits = int.Parse(databits);
+            switch (stopbits)
+            {
+                case "1":
+                    serialPort.StopBits = StopBits.One;
+                    break;
+                case "2":
+                    serialPort.StopBits = StopBits.Two;
+                    break;
+            }
+            switch (parity)
+            {
+                case "0-无校验":
+                    serialPort.Parity = Parity.None;
+                    break;
+                case "1-偶校验":
+                    serialPort.Parity = Parity.Even;
+                    break;
+                case "2-奇校验":
+                    serialPort.Parity = Parity.Odd;
+                    break;
+
+            }
+
+        }
+
+        
+    }
     public class SendTool
     {
         const int TI = 5000;
@@ -28,7 +63,7 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public async Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
+        public  async Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
         {
             return await Task.Run(() =>
             {

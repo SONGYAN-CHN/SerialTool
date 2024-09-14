@@ -9,7 +9,7 @@ namespace MyTools
 {
 
 
-    public class SaveTool
+    public static class SaveTool
     {
         /// <summary>
         /// 以时间命名.text文件

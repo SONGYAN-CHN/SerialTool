@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyTools
 {
-    public class TimeGetTool
+    public static class TimeGetTool
     {
         private static DateTime dateTime;
 

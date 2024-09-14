@@ -8,14 +8,14 @@ using System.Xml;
 
 namespace MyTools
 {
-    public class ConfigFile
+    public static class ConfigFile
     {
         private const string CONFIG_FILE_NAME = "config.xml";
 
         /// <summary>
         /// 初始化文件
         /// </summary>
-        public void InitConfigFile()
+        public static void InitConfigFile()
         {
 
             string configFilePath = GetConfigFilePath();
@@ -30,7 +30,7 @@ namespace MyTools
         /// 获取Config.xml文件地址存放在系统根目录
         /// </summary>
         /// <returns></returns>
-        private string GetConfigFilePath()
+        private static string GetConfigFilePath()
         {
             string applicationPath = Directory.GetCurrentDirectory();
             string configFilePath = Path.Combine(applicationPath, CONFIG_FILE_NAME);
@@ -41,7 +41,7 @@ namespace MyTools
         /// 创建默认头部和默认数据内容
         /// </summary>
         /// <param name="filePath"></param>
-        private void CreateDefaultConfigFile(string filePath)
+        private static void CreateDefaultConfigFile(string filePath)
         {
             XmlDocument xmlDoc = new XmlDocument();
 
@@ -70,7 +70,7 @@ namespace MyTools
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void SaveData(string key, string value)
+        public static void SaveData(string key, string value)
         {
             string configFilePath = GetConfigFilePath();
 
@@ -108,7 +108,7 @@ namespace MyTools
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string LoadData(string key)
+        public static string LoadData(string key)
         {
             string configFilePath = GetConfigFilePath();
             if (!File.Exists(configFilePath)) return "";

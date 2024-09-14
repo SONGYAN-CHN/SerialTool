@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MyTools;
+using SerialTool.form.MeterForm;
 
 namespace SerialTool
 {
@@ -15,7 +15,7 @@ namespace SerialTool
     {
         SerialFrm serialFrm = new SerialFrm();
         netFrm netFrm = new netFrm();
-        
+        MeterMainFrm meterMainFrm = new MeterMainFrm();
         public mainForm()
         {
             InitializeComponent();
@@ -44,20 +44,26 @@ namespace SerialTool
             newFrm.Dock = DockStyle.Fill;
             newFrm.Show();
         }
-        private void tsmiSerial_Click(object sender, EventArgs e)
-        {
-            OpenNewForm(serialFrm);
-        }
-
-        private void 网络调试助手ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenNewForm(netFrm);
-        }
-
         private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             serialFrm.Close();
             netFrm.Close();
+        }
+
+
+        private void SerialTool_Click(object sender, EventArgs e)
+        {
+            OpenNewForm(serialFrm);
+        }
+
+        private void NetTool_Click(object sender, EventArgs e)
+        {
+            OpenNewForm(netFrm);
+        }
+
+        private void MeterTool_Click(object sender, EventArgs e)
+        {
+            OpenNewForm(meterMainFrm);
         }
     }
 }

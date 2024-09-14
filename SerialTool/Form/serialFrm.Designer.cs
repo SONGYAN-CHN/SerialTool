@@ -44,30 +44,30 @@ namespace SerialTool
             this.cboPort = new System.Windows.Forms.ComboBox();
             this.lbl端口号 = new System.Windows.Forms.Label();
             this.gbxSendAndRecive = new System.Windows.Forms.GroupBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pnlAccept = new System.Windows.Forms.Panel();
-            this.btnAcClear = new System.Windows.Forms.Button();
-            this.txtAccept = new System.Windows.Forms.TextBox();
-            this.lblAccept = new System.Windows.Forms.Label();
+            this.spcSendAndRcv = new System.Windows.Forms.SplitContainer();
             this.pnlSend = new System.Windows.Forms.Panel();
+            this.lblMs = new System.Windows.Forms.Label();
+            this.tbxTI = new System.Windows.Forms.TextBox();
+            this.chkAutoSend = new System.Windows.Forms.CheckBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.btnSeClear = new System.Windows.Forms.Button();
             this.txtSend = new System.Windows.Forms.TextBox();
             this.lblSend = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.gbxFunction = new System.Windows.Forms.GroupBox();
-            this.tbxTI = new System.Windows.Forms.TextBox();
-            this.lblMs = new System.Windows.Forms.Label();
-            this.chkAutoSend = new System.Windows.Forms.CheckBox();
+            this.lblAccept = new System.Windows.Forms.Label();
+            this.txtAccept = new System.Windows.Forms.TextBox();
+            this.btnAcClear = new System.Windows.Forms.Button();
+            this.pnlAccept = new System.Windows.Forms.Panel();
             this.gbxPortSet.SuspendLayout();
             this.gbxSendAndRecive.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.pnlAccept.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spcSendAndRcv)).BeginInit();
+            this.spcSendAndRcv.Panel1.SuspendLayout();
+            this.spcSendAndRcv.Panel2.SuspendLayout();
+            this.spcSendAndRcv.SuspendLayout();
             this.pnlSend.SuspendLayout();
             this.gbxFunction.SuspendLayout();
+            this.pnlAccept.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbxPortSet
@@ -248,7 +248,7 @@ namespace SerialTool
             this.gbxSendAndRecive.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbxSendAndRecive.Controls.Add(this.splitContainer1);
+            this.gbxSendAndRecive.Controls.Add(this.spcSendAndRcv);
             this.gbxSendAndRecive.Location = new System.Drawing.Point(183, 12);
             this.gbxSendAndRecive.Name = "gbxSendAndRecive";
             this.gbxSendAndRecive.Size = new System.Drawing.Size(735, 587);
@@ -256,68 +256,23 @@ namespace SerialTool
             this.gbxSendAndRecive.TabStop = false;
             this.gbxSendAndRecive.Text = "收发区";
             // 
-            // splitContainer1
+            // spcSendAndRcv
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 17);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.spcSendAndRcv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spcSendAndRcv.Location = new System.Drawing.Point(3, 17);
+            this.spcSendAndRcv.Name = "spcSendAndRcv";
+            this.spcSendAndRcv.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
+            // spcSendAndRcv.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.pnlAccept);
+            this.spcSendAndRcv.Panel1.Controls.Add(this.pnlAccept);
             // 
-            // splitContainer1.Panel2
+            // spcSendAndRcv.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.pnlSend);
-            this.splitContainer1.Size = new System.Drawing.Size(729, 567);
-            this.splitContainer1.SplitterDistance = 424;
-            this.splitContainer1.TabIndex = 2;
-            // 
-            // pnlAccept
-            // 
-            this.pnlAccept.Controls.Add(this.btnAcClear);
-            this.pnlAccept.Controls.Add(this.txtAccept);
-            this.pnlAccept.Controls.Add(this.lblAccept);
-            this.pnlAccept.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAccept.Location = new System.Drawing.Point(0, 0);
-            this.pnlAccept.Name = "pnlAccept";
-            this.pnlAccept.Size = new System.Drawing.Size(729, 424);
-            this.pnlAccept.TabIndex = 0;
-            // 
-            // btnAcClear
-            // 
-            this.btnAcClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAcClear.Location = new System.Drawing.Point(676, 3);
-            this.btnAcClear.Name = "btnAcClear";
-            this.btnAcClear.Size = new System.Drawing.Size(50, 23);
-            this.btnAcClear.TabIndex = 2;
-            this.btnAcClear.Text = "清除";
-            this.btnAcClear.UseVisualStyleBackColor = true;
-            this.btnAcClear.Click += new System.EventHandler(this.btnAcClear_Click);
-            // 
-            // txtAccept
-            // 
-            this.txtAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtAccept.BackColor = System.Drawing.SystemColors.Window;
-            this.txtAccept.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtAccept.Location = new System.Drawing.Point(2, 29);
-            this.txtAccept.Multiline = true;
-            this.txtAccept.Name = "txtAccept";
-            this.txtAccept.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAccept.Size = new System.Drawing.Size(724, 392);
-            this.txtAccept.TabIndex = 1;
-            // 
-            // lblAccept
-            // 
-            this.lblAccept.AutoSize = true;
-            this.lblAccept.Location = new System.Drawing.Point(3, 14);
-            this.lblAccept.Name = "lblAccept";
-            this.lblAccept.Size = new System.Drawing.Size(29, 12);
-            this.lblAccept.TabIndex = 0;
-            this.lblAccept.Text = "接收";
+            this.spcSendAndRcv.Panel2.Controls.Add(this.pnlSend);
+            this.spcSendAndRcv.Size = new System.Drawing.Size(729, 567);
+            this.spcSendAndRcv.SplitterDistance = 424;
+            this.spcSendAndRcv.TabIndex = 2;
             // 
             // pnlSend
             // 
@@ -333,6 +288,38 @@ namespace SerialTool
             this.pnlSend.Name = "pnlSend";
             this.pnlSend.Size = new System.Drawing.Size(729, 139);
             this.pnlSend.TabIndex = 1;
+            // 
+            // lblMs
+            // 
+            this.lblMs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblMs.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.lblMs.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblMs.Location = new System.Drawing.Point(145, 119);
+            this.lblMs.Name = "lblMs";
+            this.lblMs.Size = new System.Drawing.Size(105, 14);
+            this.lblMs.TabIndex = 7;
+            this.lblMs.Text = "ms(最低100ms)";
+            // 
+            // tbxTI
+            // 
+            this.tbxTI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbxTI.Location = new System.Drawing.Point(81, 115);
+            this.tbxTI.Name = "tbxTI";
+            this.tbxTI.Size = new System.Drawing.Size(58, 21);
+            this.tbxTI.TabIndex = 6;
+            this.tbxTI.Leave += new System.EventHandler(this.tbxTI_Leave);
+            // 
+            // chkAutoSend
+            // 
+            this.chkAutoSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkAutoSend.AutoSize = true;
+            this.chkAutoSend.Location = new System.Drawing.Point(3, 120);
+            this.chkAutoSend.Name = "chkAutoSend";
+            this.chkAutoSend.Size = new System.Drawing.Size(72, 16);
+            this.chkAutoSend.TabIndex = 5;
+            this.chkAutoSend.Text = "自动发送";
+            this.chkAutoSend.UseVisualStyleBackColor = true;
+            this.chkAutoSend.CheckedChanged += new System.EventHandler(this.chkAutoSend_CheckedChanged);
             // 
             // btnSend
             // 
@@ -399,37 +386,51 @@ namespace SerialTool
             this.gbxFunction.TabStop = false;
             this.gbxFunction.Text = "功能区";
             // 
-            // tbxTI
+            // lblAccept
             // 
-            this.tbxTI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbxTI.Location = new System.Drawing.Point(81, 115);
-            this.tbxTI.Name = "tbxTI";
-            this.tbxTI.Size = new System.Drawing.Size(58, 21);
-            this.tbxTI.TabIndex = 6;
-            this.tbxTI.Leave += new System.EventHandler(this.tbxTI_Leave);
+            this.lblAccept.AutoSize = true;
+            this.lblAccept.Location = new System.Drawing.Point(3, 14);
+            this.lblAccept.Name = "lblAccept";
+            this.lblAccept.Size = new System.Drawing.Size(29, 12);
+            this.lblAccept.TabIndex = 0;
+            this.lblAccept.Text = "接收";
             // 
-            // lblMs
+            // txtAccept
             // 
-            this.lblMs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblMs.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.lblMs.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMs.Location = new System.Drawing.Point(145, 119);
-            this.lblMs.Name = "lblMs";
-            this.lblMs.Size = new System.Drawing.Size(105, 14);
-            this.lblMs.TabIndex = 7;
-            this.lblMs.Text = "ms(最低100ms)";
+            this.txtAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAccept.BackColor = System.Drawing.SystemColors.Window;
+            this.txtAccept.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtAccept.Location = new System.Drawing.Point(2, 29);
+            this.txtAccept.Multiline = true;
+            this.txtAccept.Name = "txtAccept";
+            this.txtAccept.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtAccept.Size = new System.Drawing.Size(724, 392);
+            this.txtAccept.TabIndex = 1;
             // 
-            // chkAutoSend
+            // btnAcClear
             // 
-            this.chkAutoSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkAutoSend.AutoSize = true;
-            this.chkAutoSend.Location = new System.Drawing.Point(3, 120);
-            this.chkAutoSend.Name = "chkAutoSend";
-            this.chkAutoSend.Size = new System.Drawing.Size(72, 16);
-            this.chkAutoSend.TabIndex = 5;
-            this.chkAutoSend.Text = "自动发送";
-            this.chkAutoSend.UseVisualStyleBackColor = true;
-            this.chkAutoSend.CheckedChanged += new System.EventHandler(this.chkAutoSend_CheckedChanged);
+            this.btnAcClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAcClear.Location = new System.Drawing.Point(676, 3);
+            this.btnAcClear.Name = "btnAcClear";
+            this.btnAcClear.Size = new System.Drawing.Size(50, 23);
+            this.btnAcClear.TabIndex = 2;
+            this.btnAcClear.Text = "清除";
+            this.btnAcClear.UseVisualStyleBackColor = true;
+            this.btnAcClear.Click += new System.EventHandler(this.btnAcClear_Click);
+            // 
+            // pnlAccept
+            // 
+            this.pnlAccept.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlAccept.Controls.Add(this.btnAcClear);
+            this.pnlAccept.Controls.Add(this.txtAccept);
+            this.pnlAccept.Controls.Add(this.lblAccept);
+            this.pnlAccept.Location = new System.Drawing.Point(0, 0);
+            this.pnlAccept.Name = "pnlAccept";
+            this.pnlAccept.Size = new System.Drawing.Size(729, 424);
+            this.pnlAccept.TabIndex = 0;
             // 
             // SerialFrm
             // 
@@ -445,15 +446,15 @@ namespace SerialTool
             this.gbxPortSet.ResumeLayout(false);
             this.gbxPortSet.PerformLayout();
             this.gbxSendAndRecive.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.pnlAccept.ResumeLayout(false);
-            this.pnlAccept.PerformLayout();
+            this.spcSendAndRcv.Panel1.ResumeLayout(false);
+            this.spcSendAndRcv.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spcSendAndRcv)).EndInit();
+            this.spcSendAndRcv.ResumeLayout(false);
             this.pnlSend.ResumeLayout(false);
             this.pnlSend.PerformLayout();
             this.gbxFunction.ResumeLayout(false);
+            this.pnlAccept.ResumeLayout(false);
+            this.pnlAccept.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -478,18 +479,18 @@ namespace SerialTool
         private System.Windows.Forms.Panel pnlSend;
         private System.Windows.Forms.TextBox txtSend;
         private System.Windows.Forms.Label lblSend;
-        private System.Windows.Forms.Panel pnlAccept;
-        private System.Windows.Forms.TextBox txtAccept;
-        private System.Windows.Forms.Label lblAccept;
         private System.Windows.Forms.Button btnSeClear;
-        private System.Windows.Forms.Button btnAcClear;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer spcSendAndRcv;
         private System.Windows.Forms.GroupBox gbxFunction;
         private System.Windows.Forms.Label lblMs;
         private System.Windows.Forms.TextBox tbxTI;
         private System.Windows.Forms.CheckBox chkAutoSend;
+        private System.Windows.Forms.Panel pnlAccept;
+        private System.Windows.Forms.Button btnAcClear;
+        private System.Windows.Forms.TextBox txtAccept;
+        private System.Windows.Forms.Label lblAccept;
     }
 }
 

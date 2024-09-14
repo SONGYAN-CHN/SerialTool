@@ -53,6 +53,12 @@
     <Compile Include="form\mainForm.Designer.cs">
       <DependentUpon>mainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="form\MeterForm\MeterMainFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="form\MeterForm\MeterMainFrm.Designer.cs">
+      <DependentUpon>MeterMainFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="form\netFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="form\mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="form\MeterForm\MeterMainFrm.resx">
+      <DependentUpon>MeterMainFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="form\netFrm.resx">
       <DependentUpon>netFrm.cs</DependentUpon>

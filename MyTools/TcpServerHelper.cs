@@ -12,14 +12,14 @@ namespace MyTools
     public delegate void ClientConnectedHandler(object sender, string message, TcpClient client);
     public delegate void ReceiveClientMessageOnly(object sender, string message, TcpClient client);
     public class TcpServerHelper
-    {//啊实打实大撒大声地
+    {
         Encoding gb18030Encoding = Encoding.GetEncoding("GB18030");
         public event ClientConnectedHandler OnClientConnected;
         public event ReceiveClientMessageOnly messageReceived;
         private TcpListener _listener;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly Dictionary<(string, int), TcpClient> _connectedClientsDictionary = new Dictionary<(string, int), TcpClient>();
-
+        
         #region 主要功能函数
         /// <summary>
         /// 构造函数

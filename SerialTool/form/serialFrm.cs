@@ -17,11 +17,12 @@ namespace SerialTool
 {
     public partial class SerialFrm : Form
     {
-        public Mutex mutex = new Mutex();
-        private SerialPort serialPort = new SerialPort();
-        private SendTool sendTool = new SendTool();
+
+
+
+
+        private MyTools.SendTool sendTool = new MyTools.SendTool();
         private Stopwatch stopwatch = new Stopwatch();
-        private ConfigFile _configFile = new ConfigFile();
         public SerialFrm()
         {
 
@@ -32,12 +33,12 @@ namespace SerialTool
 
             cboPort.Text = SerialPort.GetPortNames()[0];
 
-            _configFile.InitConfigFile();
-            cboBaudRate.Text = _configFile.LoadData("波特率");
-            cboDataBits.Text = _configFile.LoadData("数据位");
-            cboStopBits.Text = _configFile.LoadData("停止位");
-            cboCheck.Text = _configFile.LoadData("奇偶校验");
-            tbxTI.Text = _configFile.LoadData("自动发送TI");
+            ConfigFile.InitConfigFile();
+            cboBaudRate.Text = ConfigFile.LoadData("波特率");
+            cboDataBits.Text = ConfigFile.LoadData("数据位");
+            cboStopBits.Text = ConfigFile.LoadData("停止位");
+            cboCheck.Text = ConfigFile.LoadData("奇偶校验");
+            tbxTI.Text = ConfigFile.LoadData("自动发送TI");
 
 
         }
@@ -49,69 +50,36 @@ namespace SerialTool
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
- 
-            _configFile.SaveData("波特率", cboBaudRate.Text);
-            _configFile.SaveData("数据位", cboDataBits.Text);
-            _configFile.SaveData("停止位", cboStopBits.Text);
-            _configFile.SaveData("奇偶校验", cboCheck.Text);
-            _configFile.SaveData("自动发送TI", tbxTI.Text);
+
+            ConfigFile.SaveData("波特率", cboBaudRate.Text);
+            ConfigFile.SaveData("数据位", cboDataBits.Text);
+            ConfigFile.SaveData("停止位", cboStopBits.Text);
+            ConfigFile.SaveData("奇偶校验", cboCheck.Text);
+            ConfigFile.SaveData("自动发送TI", tbxTI.Text);
 
         }
 
         private void btnOpenPort_Click(object sender, EventArgs e)
         {
 
+            new SerialOperateTool(cboPort.Text, cboBaudRate.Text, cboDataBits.Text, cboStopBits.Text, cboCheck.Text);
 
-            switch (cboStopBits.Text)
-            {
-                case "1":
-                    serialPort.StopBits = StopBits.One;
-                    break;
-                /*
-                    //PC不支持1.5
-                    case "1.5":
-                        serialPort.StopBits = StopBits.OnePointFive;
-                        break;
-                */
-                case "2":
-                    serialPort.StopBits = StopBits.Two;
-                    break;
-
-            }
-            //0 - 无校验
-            //1 - 偶校验
-            //2 - 奇校验
-            switch (cboCheck.Text)
-            {
-                case "0-无校验":
-                    serialPort.Parity = Parity.None;
-                    break;
-                case "1-偶校验":
-                    serialPort.Parity = Parity.Even;
-                    break;
-                case "2-奇校验":
-                    serialPort.Parity = Parity.Odd;
-                    break;
-
-            }
-            serialPort.PortName = cboPort.Text;
-            serialPort.BaudRate = int.Parse(cboBaudRate.Text);
-            serialPort.DataBits = int.Parse(cboDataBits.Text);
+         
 
 
 
 
             try
             {
-                serialPort.Open();
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+                SerialOperateTool.serialPort.Open();
+                SerialOperateTool.serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             }
             catch
             {
                 MessageBox.Show("串口打开失败！");
                 return;
             }
-            if (serialPort.IsOpen)
+            if (SerialOperateTool.serialPort.IsOpen)
                 txtAccept.AppendText(TimeGetTool.TextTime() + "串口打开成功！\r\n");
 
 
@@ -127,8 +95,8 @@ namespace SerialTool
         private void btnClosePort_Click(object sender, EventArgs e)
         {
 
-            serialPort.Close();
-            if (!serialPort.IsOpen) txtAccept.AppendText(TimeGetTool.TextTime() + "串口关闭成功！\r\n");
+            SerialOperateTool.serialPort.Close();
+            if (!SerialOperateTool.serialPort.IsOpen) txtAccept.AppendText(TimeGetTool.TextTime() + "串口关闭成功！\r\n");
             this.btnClosePort.Enabled = false;
             this.btnOpenPort.Enabled = true;
             this.chkAutoSend.Checked = false;
@@ -156,7 +124,7 @@ namespace SerialTool
             this.cboStopBits.Enabled = true;
             this.cboCheck.Enabled = true;
             this.chkAutoSend.Checked = false;
-            serialPort.Close();
+            SerialOperateTool.serialPort.Close();
         }
 
         private void btnAcClear_Click(object sender, EventArgs e)
@@ -184,7 +152,7 @@ namespace SerialTool
         private async void btnSend_Click(object sender, EventArgs e)
         {
 
-            if (!serialPort.IsOpen)
+            if (!SerialOperateTool.serialPort.IsOpen)
             {
                 MessageBox.Show("串口未打开！");
                 return;
@@ -192,13 +160,13 @@ namespace SerialTool
             btnSave.Enabled = false;
             stopwatch.Restart();
 
-            serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
-            serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
-            string rcv = await sendTool.SendAndRcv(serialPort, this.txtSend.Text);
+            SerialOperateTool.serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
+            SerialOperateTool.serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
+            string rcv = await sendTool.SendAndRcv(SerialOperateTool.serialPort, this.txtSend.Text);
             txtAccept.AppendText($"{TimeGetTool.TextTime()}--发送-->{txtSend.Text}\r\n{TimeGetTool.TextTime()}--接收-->{rcv}\r\n");
             stopwatch.Stop();
             txtAccept.AppendText($"耗时：{stopwatch.ElapsedMilliseconds}ms\r\n");
-            serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+            SerialOperateTool.serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             btnSave.Enabled = true;
 
         }
@@ -208,13 +176,13 @@ namespace SerialTool
 
             if (this.chkAutoSend.Checked)
             {
-                if (!serialPort.IsOpen)
+                if (!SerialOperateTool.serialPort.IsOpen)
                 {
                     MessageBox.Show("串口未打开！");
                     this.chkAutoSend.Checked = false;
                     return;
                 }
-                serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
+                SerialOperateTool.serialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
 
                 this.btnSend.Enabled = false;
                 tbxTI.Enabled = false;
@@ -227,7 +195,7 @@ namespace SerialTool
                     {
                         stopwatch.Restart();
                         await Task.Delay(Int32.Parse(tbxTI.Text) - 100);
-                        string rcv = await sendTool.SendAndRcv(serialPort, this.txtSend.Text);
+                        string rcv = await sendTool.SendAndRcv(SerialOperateTool.serialPort, this.txtSend.Text);
                         txtAccept.AppendText($"{TimeGetTool.TextTime()}--发送-->{txtSend.Text}\r\n{TimeGetTool.TextTime()}--接收-->{ rcv}\r\n");
                         stopwatch.Stop();
                         txtAccept.AppendText($"耗时：{stopwatch.ElapsedMilliseconds}ms\r\n");
@@ -246,7 +214,7 @@ namespace SerialTool
 
                 }
                 btnSave.Enabled = true;
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+                SerialOperateTool.serialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             }
             else
             {
@@ -290,13 +258,22 @@ namespace SerialTool
             this.Invoke(new Action(() =>
            {
 
-               txtAccept.AppendText($"{TimeGetTool.TextTime()}[主动上报]--接收--> {sendTool.OnlyRcv(serialPort)}\r\n");
+               txtAccept.AppendText($"{TimeGetTool.TextTime()}[主动上报]--接收--> {sendTool.OnlyRcv(SerialOperateTool.serialPort)}\r\n");
 
            }));
 
 
 
         }
+        //public void DataRcvShow(string rcv)
+        //{
+        //    this.Invoke(new Action(() =>
+        //    {
+
+        //        txtAccept.AppendText($"{TimeGetTool.TextTime()}[主动上报]--接收--> {rcv}\r\n");
+
+        //    }));
+        //}
 
 
     }

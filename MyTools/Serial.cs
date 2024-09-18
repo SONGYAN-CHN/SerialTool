@@ -16,12 +16,12 @@ namespace MyTools
         public static SerialPort serialPort = new SerialPort();
 
         const int TI = 5000;
-        private Mutex _mutex = new Mutex();
-        private CancellationTokenSource _cancellationTokenSource;
-        public  int NumStart { get; set; }
-        public  int Numend { get; set; }
-        public  int LenInt { get; set; }
-        public  string LenStr { get; set; }
+        private static Mutex _mutex = new Mutex();
+        private static CancellationTokenSource _cancellationTokenSource;
+        public static int NumStart { get; set; }
+        public  static int Numend { get; set; }
+        public  static int LenInt { get; set; }
+        public  static string LenStr { get; set; }
 
         public Serial(string port, string baudrate, string databits, string stopbits, string parity)
         {
@@ -91,7 +91,7 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public async Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
+        public static async Task<string> SendAndRcv( string txtSend)
         {
             return await Task.Run(() =>
             {
@@ -102,7 +102,7 @@ namespace MyTools
 
                     string rcv;
                     byte[] textSendByte = ConvertTool.StringToByte(txtSend);
-                    SendWriteToPort(serialPort, textSendByte);
+                    SendWriteToPort( textSendByte);
                     if (Is698Or645(textSendByte) == 1)
                     {
                         return rcv = Rcv698();
@@ -110,7 +110,7 @@ namespace MyTools
                     }
                     else if (Is698Or645(textSendByte) == 2)
                     {
-                        return rcv = Rcv645(serialPort);
+                        return rcv = Rcv645();
 
                     }
                     else
@@ -135,7 +135,7 @@ namespace MyTools
         /// </summary>
         /// <param name="textByte"></param>
         /// <returns>StartCount=1代表698报文，StartCount=2代表645报文</returns>
-        private int Is698Or645(byte[] textByte)
+        private static int Is698Or645(byte[] textByte)
         {
             int StartCount = 0;
             foreach (int starBit in textByte)
@@ -152,7 +152,7 @@ namespace MyTools
         /// <summary>
         /// 将发送窗口内容写入串口
         /// </summary>
-        private void SendWriteToPort(SerialPort serialPort, byte[] textSendByte)
+        private static void SendWriteToPort( byte[] textSendByte)
         {
             serialPort.DiscardOutBuffer();
             serialPort.DiscardInBuffer();
@@ -165,7 +165,7 @@ namespace MyTools
         /// </summary>
         /// <param name="serialPort"></param>
         /// <returns></returns>
-        public string Rcv698()
+        public static string Rcv698()
         {
             List<byte> readByteList = new List<byte>();
             byte[] LenByte = new byte[2];
@@ -241,7 +241,7 @@ namespace MyTools
         /// </summary>
         /// <param name="serialPort"></param>
         /// <returns></returns>
-        private string Rcv645(SerialPort serialPort)
+        private static string Rcv645()
         {
 
             byte[] LenByte = new byte[1];
@@ -327,8 +327,7 @@ namespace MyTools
         /// 主动接收功能
         /// </summary>
         /// <param name="serialPort"></param>
-
-        public  string OnlyRcv()
+        public static string OnlyRcv()
         {
 
             List<byte> readByteList = new List<byte>();
@@ -382,10 +381,7 @@ namespace MyTools
 
         }
 
-        public static void SetDataReceivedHandler(SerialDataReceivedEventHandler handler)
-        {
-            serialPort.DataReceived += handler;
-        }
+
 
 
 

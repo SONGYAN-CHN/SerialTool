@@ -12,11 +12,10 @@ namespace SerialTool.form.MeterForm
 {
     public partial class MeterMainFrm : Form
     {
-        private SerialFrm serial;
+
         public MeterMainFrm()
         {
             InitializeComponent();
-            //toolStripTextBox1.Text=serial.cb
         }
     }
 }

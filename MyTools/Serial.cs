@@ -10,11 +10,20 @@ using System.Threading;
 namespace MyTools
 {
 
-    public class SerialOperateTool
+
+    public class Serial
     {
         public static SerialPort serialPort = new SerialPort();
-        private static SendTool sendTool = new SendTool();
-        public SerialOperateTool(string port, string baudrate, string databits, string stopbits, string parity)
+
+        const int TI = 5000;
+        private Mutex _mutex = new Mutex();
+        private CancellationTokenSource _cancellationTokenSource;
+        public  int NumStart { get; set; }
+        public  int Numend { get; set; }
+        public  int LenInt { get; set; }
+        public  string LenStr { get; set; }
+
+        public Serial(string port, string baudrate, string databits, string stopbits, string parity)
         {
             serialPort.PortName = port;
             serialPort.BaudRate = int.Parse(baudrate);
@@ -44,18 +53,37 @@ namespace MyTools
 
         }
 
-        
-    }
-    public class SendTool
-    {
-        const int TI = 5000;
-        private Mutex _mutex = new Mutex();
-        private CancellationTokenSource _cancellationTokenSource;
-        public int NumStart { get; set; }
-        public int Numend { get; set; }
-        public int LenInt { get; set; }
-        public string LenStr { get; set; }
-        
+        public static string Open()
+        {
+
+            try
+            {
+                serialPort.Open();
+            }
+            catch
+            {
+
+                return "串口打开失败！";
+            }
+
+            return "串口打开成功！";
+        }
+
+        public static string Close()
+        {
+            try
+            {
+                serialPort.Close();
+            }
+            catch
+            {
+                
+                return "串口关闭失败！";
+            }
+            return "串口关闭成功！";
+        }
+
+
 
         /// <summary>
         /// 发送后接收功能
@@ -63,13 +91,13 @@ namespace MyTools
         /// <param name="serialPort"></param>
         /// <param name="txtSend"></param>
         /// <returns></returns>
-        public  async Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
+        public async Task<string> SendAndRcv(SerialPort serialPort, string txtSend)
         {
             return await Task.Run(() =>
             {
                 try
                 {
-                    
+
                     _mutex.WaitOne();
 
                     string rcv;
@@ -77,7 +105,7 @@ namespace MyTools
                     SendWriteToPort(serialPort, textSendByte);
                     if (Is698Or645(textSendByte) == 1)
                     {
-                        return rcv = Rcv698(serialPort);
+                        return rcv = Rcv698();
 
                     }
                     else if (Is698Or645(textSendByte) == 2)
@@ -137,7 +165,7 @@ namespace MyTools
         /// </summary>
         /// <param name="serialPort"></param>
         /// <returns></returns>
-        private string Rcv698(SerialPort serialPort)
+        public string Rcv698()
         {
             List<byte> readByteList = new List<byte>();
             byte[] LenByte = new byte[2];
@@ -300,7 +328,7 @@ namespace MyTools
         /// </summary>
         /// <param name="serialPort"></param>
 
-        public string OnlyRcv(SerialPort serialPort)
+        public  string OnlyRcv()
         {
 
             List<byte> readByteList = new List<byte>();
@@ -354,9 +382,21 @@ namespace MyTools
 
         }
 
+        public static void SetDataReceivedHandler(SerialDataReceivedEventHandler handler)
+        {
+            serialPort.DataReceived += handler;
+        }
 
-       
+
+
+
+
+
 
     }
+
+
+
+
 }
 
